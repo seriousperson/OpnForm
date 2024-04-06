@@ -1,24 +1,22 @@
 <?php
 
-
 namespace App\Service\Forms;
 
-
 use App\Models\Forms\Form;
-use App\Service\WorkspaceHelper;
 use Carbon\Carbon;
 
 class FormSubmissionFormatter
 {
-
     /**
      * If true, creates html <a> links for emails and urls
+     *
      * @var bool
      */
     private $createLinks = false;
 
     /**
      * If true, serialize arrays
+     *
      * @var bool
      */
     private $outputStringsOnly = false;
@@ -29,6 +27,8 @@ class FormSubmissionFormatter
 
     private $showRemovedFields = false;
 
+    private $useSignedUrlForFiles = false;
+
     /**
      * Logic resolver needs an array id => value, so we create it here
      */
@@ -36,36 +36,48 @@ class FormSubmissionFormatter
 
     public function __construct(private Form $form, private array $formData)
     {
-       $this->initIdFormData();
+        $this->initIdFormData();
     }
 
     public function createLinks()
     {
         $this->createLinks = true;
+
         return $this;
     }
 
     public function showHiddenFields()
     {
         $this->showHiddenFields = true;
+
         return $this;
     }
 
     public function outputStringsOnly()
     {
         $this->outputStringsOnly = true;
+
         return $this;
     }
 
     public function setEmptyForNoValue()
     {
         $this->setEmptyForNoValue = true;
+
         return $this;
     }
 
     public function showRemovedFields()
     {
         $this->showRemovedFields = true;
+
+        return $this;
+    }
+
+    public function useSignedUrlForFiles()
+    {
+        $this->useSignedUrlForFiles = true;
+
         return $this;
     }
 
@@ -77,25 +89,46 @@ class FormSubmissionFormatter
     public function getCleanKeyValue()
     {
         $data = $this->formData;
-        $fields = ($this->showRemovedFields) ? array_merge($this->form->properties, $this->form->removed_properties) : $this->form->properties;
+
+        $fields = collect($this->form->properties);
+        $removeFields = collect($this->form->removed_properties)->map(function ($field) {
+            return [
+                ...$field,
+                'removed' => true,
+            ];
+        });
+        if ($this->showRemovedFields) {
+            $fields = $fields->merge($removeFields);
+        }
+        $fields = $fields->filter(function ($field) {
+            return ! in_array($field['type'], ['nf-text', 'nf-code', 'nf-page-break', 'nf-divider', 'nf-image']);
+        })->values();
 
         $returnArray = [];
-        foreach ($fields as &$field) {
-            $isRemoved = in_array($field['id'], array_column($this->form->removed_properties, 'id')) ?? false;
-            if($isRemoved){
-                $field['name'] = $field['name']." (deleted)";
+        foreach ($fields as $field) {
+
+            if (in_array($field['id'], ['nf-text', 'nf-code', 'nf-page-break', 'nf-divider', 'nf-image'])) {
+                continue;
             }
 
+            if ($field['removed'] ?? false) {
+                $field['name'] = $field['name'].' (deleted)';
+            }
+
+            // Add ID to avoid name clashes
+            $field['name'] = $field['name'].' ('.\Str::of($field['id']).')';
+
             // If not present skip
-            if (!isset($data[$field['id']])) {
+            if (! isset($data[$field['id']])) {
                 if ($this->setEmptyForNoValue) {
                     $returnArray[$field['name']] = '';
                 }
+
                 continue;
             }
 
             // If hide hidden fields
-            if (!$this->showHiddenFields) {
+            if (! $this->showHiddenFields) {
                 if (FormLogicPropertyResolver::isHidden($field, $this->idFormData ?? [])) {
                     continue;
                 }
@@ -107,7 +140,7 @@ class FormSubmissionFormatter
                 $returnArray[$field['name']] = '<a href="mailto:'.$data[$field['id']].'">'.$data[$field['id']].'</a>';
             } elseif ($field['type'] == 'multi_select') {
                 $val = $data[$field['id']];
-                if ($this->outputStringsOnly) {
+                if ($this->outputStringsOnly && is_array($val)) {
                     $returnArray[$field['name']] = implode(', ', $val);
                 } else {
                     $returnArray[$field['name']] = $val;
@@ -115,27 +148,29 @@ class FormSubmissionFormatter
             } elseif ($field['type'] == 'files') {
                 if ($this->outputStringsOnly) {
                     $formId = $this->form->id;
-                    $returnArray[$field['name']] = implode(', ',
+                    $returnArray[$field['name']] = implode(
+                        ', ',
                         collect($data[$field['id']])->map(function ($file) use ($formId) {
-                            return route('open.forms.submissions.file', [$formId, $file]);
+                            return $this->getFileUrl($formId, $file);
                         })->toArray()
                     );
                 } else {
                     $formId = $this->form->id;
                     $returnArray[$field['name']] = collect($data[$field['id']])->map(function ($file) use ($formId) {
-                            return [
-                                'file_url' => route('open.forms.submissions.file', [$formId, $file]),
-                                'file_name' => $file,
-                            ];
-                        });
+                        return [
+                            'file_url' => $this->getFileUrl($formId, $file),
+                            'file_name' => $file,
+                        ];
+                    });
                 }
             } else {
-                if (is_array($data[$field['id']])) {
+                if (is_array($data[$field['id']]) && $this->outputStringsOnly) {
                     $data[$field['id']] = implode(', ', $data[$field['id']]);
                 }
                 $returnArray[$field['name']] = $data[$field['id']];
             }
         }
+
         return $returnArray;
     }
 
@@ -149,12 +184,12 @@ class FormSubmissionFormatter
         $fields = $this->form->properties;
         $transformedFields = [];
         foreach ($fields as $field) {
-            if (!isset($field['id']) || !isset($data[$field['id']])) {
+            if (! isset($field['id']) || ! isset($data[$field['id']])) {
                 continue;
             }
 
             // If hide hidden fields
-            if (!$this->showHiddenFields) {
+            if (! $this->showHiddenFields) {
                 if (FormLogicPropertyResolver::isHidden($field, $this->idFormData)) {
                     continue;
                 }
@@ -183,16 +218,26 @@ class FormSubmissionFormatter
             } elseif ($field['type'] == 'files') {
                 if ($this->outputStringsOnly) {
                     $formId = $this->form->id;
-                    $field['value'] = implode(', ',
+                    $field['value'] = implode(
+                        ', ',
                         collect($data[$field['id']])->map(function ($file) use ($formId) {
-                            return route('open.forms.submissions.file', [$formId, $file]);
+                            return $this->getFileUrl($formId, $file);
                         })->toArray()
                     );
+                    $field['email_data'] = collect($data[$field['id']])->map(function ($file) use ($formId) {
+                        $splitText = explode('.', $file);
+
+                        return [
+                            'unsigned_url' => route('open.forms.submissions.file', [$formId, $file]),
+                            'signed_url' => $this->getFileUrl($formId, $file),
+                            'label' => \Str::limit($file, 20, '[...].'.end($splitText)),
+                        ];
+                    })->toArray();
                 } else {
                     $formId = $this->form->id;
                     $field['value'] = collect($data[$field['id']])->map(function ($file) use ($formId) {
                         return [
-                            'file_url' => route('open.forms.submissions.file', [$formId, $file]),
+                            'file_url' => $this->getFileUrl($formId, $file),
                             'file_name' => $file,
                         ];
                     });
@@ -207,10 +252,12 @@ class FormSubmissionFormatter
             }
             $transformedFields[] = $field;
         }
+
         return $transformedFields;
     }
 
-    private function initIdFormData() {
+    private function initIdFormData()
+    {
         $formProperties = collect($this->form->properties);
         foreach ($this->formData as $key => $value) {
             $property = $formProperties->first(function ($item) use ($key) {
@@ -222,4 +269,11 @@ class FormSubmissionFormatter
         }
     }
 
+    private function getFileUrl($formId, $file)
+    {
+        return $this->useSignedUrlForFiles ? \URL::signedRoute(
+            'open.forms.submissions.file',
+            [$formId, $file]
+        ) : route('open.forms.submissions.file', [$formId, $file]);
+    }
 }

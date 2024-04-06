@@ -9,7 +9,7 @@ class UserResource extends JsonResource
     /**
      * Transform the resource into an array.
      *
-     * @param \Illuminate\Http\Request $request
+     * @param  \Illuminate\Http\Request  $request
      * @return array|\Illuminate\Contracts\Support\Arrayable|\JsonSerializable
      */
     public function toArray($request)
@@ -18,6 +18,7 @@ class UserResource extends JsonResource
             'is_subscribed' => $this->is_subscribed,
             'has_enterprise_subscription' => $this->has_enterprise_subscription,
             'admin' => $this->admin,
+            'moderator' => $this->moderator,
             'template_editor' => $this->template_editor,
             'has_customer_id' => $this->has_customer_id,
             'has_forms' => $this->has_forms,

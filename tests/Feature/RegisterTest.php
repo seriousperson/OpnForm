@@ -1,30 +1,30 @@
 <?php
 
 use App\Models\User;
-use Tests\TestCase;
+
 use function Pest\Faker\faker;
 
 it('can register', function () {
-    $this->postJson('/api/register', [
+    $this->postJson('/register', [
         'name' => 'Test User',
         'email' => 'test@test.app',
         'hear_about_us' => 'google',
         'password' => 'secret',
         'password_confirmation' => 'secret',
-        'agree_terms' => true
+        'agree_terms' => true,
     ])
         ->assertSuccessful()
         ->assertJsonStructure(['id', 'name', 'email']);
     $this->assertDatabaseHas('users', [
         'name' => 'Test User',
-        'email' => 'test@test.app'
+        'email' => 'test@test.app',
     ]);
 });
 
 it('cannot register with existing email', function () {
     User::factory()->create(['email' => 'test@test.app']);
 
-    $this->postJson('/api/register', [
+    $this->postJson('/register', [
         'name' => 'Test User',
         'email' => 'test@test.app',
         'password' => 'secret',
@@ -37,20 +37,20 @@ it('cannot register with existing email', function () {
 it('cannot register with disposable email', function () {
     // Select random email
     $email = faker()->randomElement([
-        'dumliyupse@gufum.com', 
-        'kcs79722@zslsz.com', 
-        'pfizexwxtdifxupdhr@tpwlb.com', 
-        'qvj86ypqfm@email.edu.pl'
+        'dumliyupse@gufum.com',
+        'kcs79722@zslsz.com',
+        'pfizexwxtdifxupdhr@tpwlb.com',
+        'qvj86ypqfm@email.edu.pl',
     ]);
 
-    $this->postJson('/api/register', [
-            'name' => 'Test disposable',
-            'email' => $email,
-            'hear_about_us' => 'google',
-            'password' => 'secret',
-            'password_confirmation' => 'secret',
-            'agree_terms' => true
-        ])
+    $this->postJson('/register', [
+        'name' => 'Test disposable',
+        'email' => $email,
+        'hear_about_us' => 'google',
+        'password' => 'secret',
+        'password_confirmation' => 'secret',
+        'agree_terms' => true,
+    ])
         ->assertStatus(422)
         ->assertJsonValidationErrors(['email'])
         ->assertJson([

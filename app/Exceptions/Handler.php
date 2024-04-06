@@ -39,21 +39,15 @@ class Handler extends ExceptionHandler
 
     /**
      * Convert an authentication exception into a response.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Illuminate\Auth\AuthenticationException  $exception
-     * @return \Illuminate\Http\Response
      */
     protected function unauthenticated($request, AuthenticationException $exception)
     {
-        return $request->expectsJson()
-            ? response()->json(['message' => $exception->getMessage()], 401)
-            : redirect()->guest(url('/login'));
+        return response()->json(['message' => $exception->getMessage()], 401);
     }
 
     public function report(Throwable $exception)
     {
-        if ($this->shouldReport($exception) ) {
+        if ($this->shouldReport($exception)) {
             if (app()->bound('sentry') && $this->sentryShouldReport($exception)) {
                 app('sentry')->captureException($exception);
                 Log::debug('Un-handled Exception: '.$exception->getMessage(), [
@@ -70,7 +64,7 @@ class Handler extends ExceptionHandler
 
     public function render($request, Throwable $e)
     {
-        if ($this->shouldReport($e) && !in_array(\App::environment(),['testing']) && config('logging.channels.slack.enabled')) {
+        if ($this->shouldReport($e) && ! in_array(\App::environment(), ['testing']) && config('logging.channels.slack.enabled')) {
             Log::channel('slack')->error($e);
         }
 
@@ -84,6 +78,7 @@ class Handler extends ExceptionHandler
                 return false;
             }
         }
+
         return true;
     }
 }

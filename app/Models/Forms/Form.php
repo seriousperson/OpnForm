@@ -3,53 +3,44 @@
 namespace App\Models\Forms;
 
 use App\Events\Models\FormCreated;
+use App\Models\Integration\FormIntegration;
 use App\Models\Integration\FormZapierWebhook;
 use App\Models\Traits\CachableAttributes;
 use App\Models\Traits\CachesAttributes;
 use App\Models\User;
 use App\Models\Workspace;
 use Database\Factories\FormFactory;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Spatie\Sluggable\HasSlug;
 use Spatie\Sluggable\SlugOptions;
 use Stevebauman\Purify\Facades\Purify;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Database\Eloquent\Casts\Attribute;
 
 class Form extends Model implements CachableAttributes
 {
     use CachesAttributes;
 
-    const DARK_MODE_VALUES = ['auto', 'light', 'dark'];
-    const THEMES = ['default', 'simple', 'notion'];
-    const WIDTHS = ['centered', 'full'];
-    const VISIBILITY = ['public', 'draft', 'closed'];
+    use HasFactory;
+    use HasSlug;
+    use SoftDeletes;
 
-    use HasFactory, HasSlug, SoftDeletes;
+    public const DARK_MODE_VALUES = ['auto', 'light', 'dark'];
+
+    public const THEMES = ['default', 'simple', 'notion'];
+
+    public const WIDTHS = ['centered', 'full'];
+
+    public const VISIBILITY = ['public', 'draft', 'closed'];
 
     protected $fillable = [
         'workspace_id',
         'creator_id',
         'properties',
         'removed_properties',
-
-        // Notifications
-        'notifies',
-        'notification_emails',
-        'send_submission_confirmation',
-        'notification_sender',
-        'notification_subject',
-        'notification_body',
-        'notifications_include_submission',
-        'slack_webhook_url',
-        'discord_webhook_url',
-        'notification_settings',
-
-        // integrations
-        'webhook_url',
 
         'title',
         'description',
@@ -87,6 +78,7 @@ class Form extends Model implements CachableAttributes
         'editable_submissions',
         'editable_submissions_button_text',
         'confetti_on_submission',
+        'show_progress_bar',
         'auto_save',
 
         // Security & Privacy
@@ -94,7 +86,7 @@ class Form extends Model implements CachableAttributes
         'password',
 
         // Custom SEO
-        'seo_meta'
+        'seo_meta',
     ];
 
     protected $casts = [
@@ -103,8 +95,7 @@ class Form extends Model implements CachableAttributes
         'closes_at' => 'datetime',
         'tags' => 'array',
         'removed_properties' => 'array',
-        'seo_meta' => 'object',
-        'notification_settings' => 'object'
+        'seo_meta' => 'object'
     ];
 
     protected $appends = [
@@ -113,27 +104,17 @@ class Form extends Model implements CachableAttributes
 
     protected $hidden = [
         'workspace_id',
-        'notifies',
-        'slack_webhook_url',
-        'discord_webhook_url',
-        'webhook_url',
-        'send_submission_confirmation',
         'redirect_url',
         'database_fields_update',
-        'notification_sender',
-        'notification_subject',
-        'notification_body',
-        'notifications_include_submission',
         'password',
         'tags',
-        'notification_emails',
-        'removed_properties'
+        'removed_properties',
     ];
 
     protected $cachableAttributes = [
         'is_pro',
         'views_count',
-        'max_file_size'
+        'max_file_size',
     ];
 
     /**
@@ -157,12 +138,13 @@ class Form extends Model implements CachableAttributes
         if ($this->custom_domain) {
             return 'https://' . $this->custom_domain . '/forms/' . $this->slug;
         }
-        return url('/forms/' . $this->slug);
+
+        return front_url('/forms/' . $this->slug);
     }
 
     public function getEditUrlAttribute()
     {
-        return url('/forms/' . $this->slug . '/show');
+        return front_url('/forms/' . $this->slug . '/show');
     }
 
     public function getSubmissionsCountAttribute()
@@ -174,9 +156,10 @@ class Form extends Model implements CachableAttributes
     {
         return $this->remember('views_count', 15 * 60, function (): int {
             if (env('DB_CONNECTION') == 'mysql') {
-                return (int)($this->views()->count() +
+                return (int) ($this->views()->count() +
                     $this->statistics()->sum(DB::raw("json_extract(data, '$.views')")));
             }
+
             return $this->views()->count() +
                 $this->statistics()->sum(DB::raw("cast(data->>'views' as integer)"));
         });
@@ -204,20 +187,21 @@ class Form extends Model implements CachableAttributes
 
     public function getIsClosedAttribute()
     {
-        return ($this->closes_at && now()->gt($this->closes_at));
+        return $this->closes_at && now()->gt($this->closes_at);
     }
 
     public function getFormPendingSubmissionKeyAttribute()
     {
         if ($this->updated_at?->timestamp) {
-            return "openform-" . $this->id . "-pending-submission-" . substr($this->updated_at?->timestamp, -6);
+            return 'openform-' . $this->id . '-pending-submission-' . substr($this->updated_at?->timestamp, -6);
         }
+
         return null;
     }
 
     public function getMaxNumberOfSubmissionsReachedAttribute()
     {
-        return ($this->max_submissions_count && $this->max_submissions_count <= $this->submissions_count);
+        return $this->max_submissions_count && $this->max_submissions_count <= $this->submissions_count;
     }
 
     public function setClosedTextAttribute($value)
@@ -237,7 +221,7 @@ class Form extends Model implements CachableAttributes
 
     public function getMaxFileSizeAttribute()
     {
-        return $this->remember('max_file_size', 15 * 60, function(): int {
+        return $this->remember('max_file_size', 15 * 60, function (): int {
             return $this->workspace->max_file_size;
         });
     }
@@ -284,6 +268,11 @@ class Form extends Model implements CachableAttributes
         return $this->hasMany(FormZapierWebhook::class);
     }
 
+    public function integrations()
+    {
+        return $this->hasMany(FormIntegration::class);
+    }
+
     /**
      * Config/options
      */
@@ -300,21 +289,5 @@ class Form extends Model implements CachableAttributes
     public static function newFactory()
     {
         return FormFactory::new();
-    }
-
-
-    public function getNotifiesWebhookAttribute()
-    {
-        return !empty($this->webhook_url);
-    }
-
-    public function getNotifiesDiscordAttribute()
-    {
-        return !empty($this->discord_webhook_url);
-    }
-
-    public function getNotifiesSlackAttribute()
-    {
-        return !empty($this->slack_webhook_url);
     }
 }

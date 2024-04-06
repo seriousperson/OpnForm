@@ -6,6 +6,47 @@ on:
   pull_request:
 
 jobs:
+
+  code_lint:
+    runs-on: ubuntu-latest
+    name: Run code linters
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Get Composer cache directory
+        id: composer-cache
+        run: |
+          echo "::set-output name=dir::$(composer config cache-files-dir)"
+
+      - uses: actions/cache@v2
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-composer-
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: 8.2
+          extensions: dom, curl, mbstring, pdo, sqlite, pdo_sqlite
+          tools: composer:v2
+          coverage: none
+
+      - name: Prepare the environment
+        run: cp .env.example .env
+
+      - name: Install composer dependencies
+        run: composer install --prefer-dist --no-interaction --no-progress --ignore-platform-reqs --optimize-autoloader
+
+      - name: Directory permissions
+        run: chmod -R 777 storage bootstrap/cache
+
+      - name: Run PHP lint check
+        run: ./vendor/bin/pint --test
+
   tests:
     runs-on: ubuntu-latest
 
@@ -46,9 +87,6 @@ jobs:
           # Maps tcp port 3306 on service container to the host
           - 3306:3306
 
-    concurrency:
-      group: 'run-tests'
-
     strategy:
       fail-fast: true
       matrix:
@@ -86,13 +124,6 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-composer-
 
-      - uses: actions/cache@v2
-        with:
-          path: ~/.npm
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-node-
-
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
@@ -128,22 +159,44 @@ jobs:
           path: storage/logs/laravel.log
           retention-days: 3
 
+  build-nuxt-app:
+    runs-on: ubuntu-latest
+    name: Build the Nuxt app
+    defaults:
+        run:
+            working-directory: ./client
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: '20'
+
+      - uses: actions/cache@v2
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      - name: Prepare the environment
+        run: cp .env.example .env
+
       - name: Install npm dependencies
         run: npm install --no-audit --no-progress --silent
 
       - name: Build client
         run: npm run build
+        env:
+          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
 
   production-deploy:
-    needs: [ tests ]
+    needs: [ code_lint, tests, build-nuxt-app ]
     if: success() && github.ref == 'refs/heads/main' && github.event_name == 'push'
     runs-on: ubuntu-latest
-    strategy:
-      fail-fast: true
-      matrix:
-        php: [ 8.2 ]
-
-    name: Triggers deploy through Laravel Vapor
+    name: Triggers Deployment (Vapor & Amplify)
 
     steps:
       - name: Checkout code
@@ -171,7 +224,7 @@ jobs:
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: ${{ matrix.php }}
+          php-version: 8.2
           extensions: dom, curl, mbstring, pdo, sqlite, pdo_sqlite
           tools: composer:v2
           coverage: none
@@ -185,15 +238,12 @@ jobs:
       - name: Directory permissions
         run: chmod -R 777 storage bootstrap/cache
 
-      - name: Install npm dependencies
-        run: npm install --no-audit --no-progress --silent
+      - name: Trigger front-end deployment
+        run:  |
+          URL="${{ secrets.AMPLIFY_DEPLOY_URL }}"
+          curl -X POST -d {} "$URL" -H "Content-Type: application/json"
 
-      - name: Build client
-        run: npm run build
-        env:
-          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
-
-      - name: Deploy to production
-        run: php vendor/bin/vapor deploy production --commit="${GITHUB_SHA}" --message="${GITHUB_REF}"
+      - name: Deploy back-end to production
+        run: php vendor/bin/vapor deploy api-production --commit="${GITHUB_SHA}" --message="${GITHUB_REF}"
         env:
           VAPOR_API_TOKEN: ${{ secrets.VAPOR_API_TOKEN }}

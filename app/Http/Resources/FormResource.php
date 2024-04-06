@@ -3,10 +3,8 @@
 namespace App\Http\Resources;
 
 use App\Http\Middleware\Form\ProtectedForm;
-use App\Http\Resources\UserResource;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Http\Request;
 
 class FormResource extends JsonResource
 {
@@ -20,43 +18,27 @@ class FormResource extends JsonResource
      */
     public function toArray($request)
     {
-        if(!$this->userIsFormOwner() && ProtectedForm::isProtected($request, $this->resource)){
+        if (!$this->userIsFormOwner() && ProtectedForm::isProtected($request, $this->resource)) {
             return $this->getProtectedForm();
         }
 
         $ownerData = $this->userIsFormOwner() ? [
             'views_count' => $this->views_count,
             'submissions_count' => $this->submissions_count,
-            'notifies' => $this->notifies,
-            'notifies_webhook' => $this->notifies_webhook,
-            'notifies_slack' => $this->notifies_slack,
-            'notifies_discord' => $this->notifies_discord,
             'send_submission_confirmation' => $this->send_submission_confirmation,
-            'webhook_url' => $this->webhook_url,
             'redirect_url' => $this->redirect_url,
             'database_fields_update' => $this->database_fields_update,
             'cleanings' => $this->getCleanigns(),
-            'notification_sender' => $this->notification_sender,
-            'notification_subject' => $this->notification_subject,
-            'notification_body' => $this->notification_body,
-            'notifications_include_submission' => $this->notifications_include_submission,
             'can_be_indexed' => $this->can_be_indexed,
             'password' => $this->password,
             'tags' => $this->tags,
             'visibility' => $this->visibility,
-            'notification_emails' => $this->notification_emails,
-            'slack_webhook_url' => $this->slack_webhook_url,
-            'discord_webhook_url' => $this->discord_webhook_url,
-            'notification_settings' => $this->notification_settings,
             'removed_properties' => $this->removed_properties,
             'last_edited_human' => $this->updated_at?->diffForHumans(),
             'seo_meta' => $this->seo_meta,
-            'max_file_size' => $this->max_file_size / 1000000,
         ] : [];
 
-        $baseData = $this->getFilteredFormData(parent::toArray($request), $this->userIsFormOwner());
-
-        return array_merge($baseData, $ownerData, [
+        return array_merge(parent::toArray($request), $ownerData, [
             'is_pro' => $this->workspaceIsPro(),
             'workspace_id' => $this->workspace_id,
             'workspace' => new WorkspaceResource($this->getWorkspace()),
@@ -64,35 +46,15 @@ class FormResource extends JsonResource
             'is_password_protected' => false,
             'has_password' => $this->has_password,
             'max_number_of_submissions_reached' => $this->max_number_of_submissions_reached,
-            'form_pending_submission_key' => $this->form_pending_submission_key
+            'form_pending_submission_key' => $this->form_pending_submission_key,
+            'max_file_size' => $this->max_file_size / 1000000,
         ]);
-    }
-
-    /**
-     * Filter form data to hide properties from users.
-     * - For relation fields, hides the relation information
-     */
-    private function getFilteredFormData(array $data, bool $userIsFormOwner)
-    {
-        if ($userIsFormOwner) return $data;
-
-        $properties = collect($data['properties'])->map(function($property){
-            // Remove database details from relation
-            if ($property['type'] === 'relation') {
-                if (isset($property['relation'])) {
-                    unset($property['relation']);
-                }
-            }
-            return $property;
-        });
-
-        $data['properties'] = $properties->toArray();
-        return $data;
     }
 
     public function setCleanings(array $cleanings)
     {
         $this->cleanings = $cleanings;
+
         return $this;
     }
 
@@ -101,27 +63,37 @@ class FormResource extends JsonResource
         return [
             'id' => $this->id,
             'title' => $this->title,
+            'description' => $this->description,
             'slug' => $this->slug,
             'custom_code' => $this->custom_code,
             'dark_mode' => $this->dark_mode,
             'transparent_background' => $this->transparent_background,
             'color' => $this->color,
+            'theme' => $this->theme,
             'is_password_protected' => true,
             'has_password' => $this->has_password,
             'width' => 'centered',
-            'properties' => []
+            'no_branding' => $this->no_branding,
+            'properties' => [],
+            'logo_picture' => $this->logo_picture,
+            'seo_meta' => $this->seo_meta,
+            'cover_picture' => $this->cover_picture,
+
         ];
     }
 
-    private function getWorkspace() {
+    private function getWorkspace()
+    {
         return $this->extra?->loadedWorkspace ?? $this->workspace;
     }
 
-    private function workspaceIsPro() {
+    private function workspaceIsPro()
+    {
         return $this->extra?->workspaceIsPro ?? $this->getWorkspace()->is_pro ?? $this->is_pro;
     }
 
-    private function userIsFormOwner() {
+    private function userIsFormOwner()
+    {
         return $this->extra?->userIsOwner ??
             (
                 Auth::check() && Auth::user()->ownsForm($this->resource)

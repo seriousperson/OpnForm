@@ -9,10 +9,11 @@ use Laravel\Cashier\Subscription;
 
 class SubscriptionController extends Controller
 {
-    const SUBSCRIPTION_PLANS = ['monthly', 'yearly'];
+    public const SUBSCRIPTION_PLANS = ['monthly', 'yearly'];
 
-    const PRO_SUBSCRIPTION_NAME = 'default';
-    const SUBSCRIPTION_NAMES = [
+    public const PRO_SUBSCRIPTION_NAME = 'default';
+
+    public const SUBSCRIPTION_NAMES = [
         self::PRO_SUBSCRIPTION_NAME,
     ];
 
@@ -30,7 +31,7 @@ class SubscriptionController extends Controller
         if ($user->subscriptions()->where('stripe_status', 'past_due')->first()) {
             return $this->error([
                 'message' => 'You already have a past due subscription. Please verify your details in the billing page,
-                and contact us if the issue persists.'
+                and contact us if the issue persists.',
             ]);
         }
 
@@ -45,24 +46,24 @@ class SubscriptionController extends Controller
         $checkout = $checkoutBuilder
             ->collectTaxIds()
             ->checkout([
-                'success_url' => url('/subscriptions/success'),
-                'cancel_url' => url('/subscriptions/error'),
+                'success_url' => front_url('/subscriptions/success'),
+                'cancel_url' => front_url('/subscriptions/error'),
                 'billing_address_collection' => 'required',
                 'customer_update' => [
                     'address' => 'auto',
                     'name' => 'never',
-                ]
+                ],
             ]);
 
         return $this->success([
-            'checkout_url' => $checkout->url
+            'checkout_url' => $checkout->url,
         ]);
     }
 
     public function updateStripeDetails(UpdateStripeDetailsRequest $request)
     {
         $user = Auth::user();
-        if (!$user->hasStripeId()) {
+        if (! $user->hasStripeId()) {
             $user->createAsStripeCustomer();
         }
         $user->updateStripeCustomer([
@@ -78,13 +79,14 @@ class SubscriptionController extends Controller
     public function billingPortal()
     {
         $this->middleware('auth');
-        if (!Auth::user()->has_customer_id) {
+        if (! Auth::user()->has_customer_id) {
             return $this->error([
-                "message" => "Please subscribe before accessing your billing portal."
+                'message' => 'Please subscribe before accessing your billing portal.',
             ]);
         }
+
         return $this->success([
-            'portal_url' => Auth::user()->billingPortalUrl(url('/home'))
+            'portal_url' => Auth::user()->billingPortalUrl(front_url('/home')),
         ]);
     }
 

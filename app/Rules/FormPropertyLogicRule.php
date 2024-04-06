@@ -2,23 +2,22 @@
 
 namespace App\Rules;
 
-use Illuminate\Contracts\Validation\Rule;
 use Illuminate\Contracts\Validation\DataAwareRule;
+use Illuminate\Contracts\Validation\Rule;
 use Illuminate\Support\Str;
 
-class FormPropertyLogicRule implements Rule, DataAwareRule 
+class FormPropertyLogicRule implements DataAwareRule, Rule
 {
-
-    const ACTIONS_VALUES = [
+    public const ACTIONS_VALUES = [
         'show-block',
         'hide-block',
         'make-it-optional',
         'require-answer',
         'enable-block',
-        'disable-block'
+        'disable-block',
     ];
 
-    const CONDITION_MAPPING = [
+    public const CONDITION_MAPPING = [
         'text' => [
             'comparators' => [
                 'equals' => [
@@ -43,35 +42,35 @@ class FormPropertyLogicRule implements Rule, DataAwareRule
                     'expected_type' => 'boolean',
                     'format' => [
                         'type' => 'enum',
-                        'values' => [true]
-                    ]
+                        'values' => [true],
+                    ],
                 ],
                 'is_not_empty' => [
                     'expected_type' => 'boolean',
                     'format' => [
                         'type' => 'enum',
-                        'values' => [true]
-                    ]
-                ], 
+                        'values' => [true],
+                    ],
+                ],
                 'content_length_equals' => [
-                    'expected_type' => 'number'
+                    'expected_type' => 'number',
                 ],
                 'content_length_does_not_equal' => [
-                    'expected_type' => 'number'
+                    'expected_type' => 'number',
                 ],
                 'content_length_greater_than' => [
-                    'expected_type' => 'number'
+                    'expected_type' => 'number',
                 ],
                 'content_length_greater_than_or_equal_to' => [
-                    'expected_type' => 'number'
+                    'expected_type' => 'number',
                 ],
                 'content_length_less_than' => [
-                    'expected_type' => 'number'
+                    'expected_type' => 'number',
                 ],
                 'content_length_less_than_or_equal_to' => [
-                    'expected_type' => 'number'
-                ]
-            ]
+                    'expected_type' => 'number',
+                ],
+            ],
         ],
         'url' => [
             'comparators' => [
@@ -97,35 +96,35 @@ class FormPropertyLogicRule implements Rule, DataAwareRule
                     'expected_type' => 'boolean',
                     'format' => [
                         'type' => 'enum',
-                        'values' => [true]
-                    ]
+                        'values' => [true],
+                    ],
                 ],
                 'is_not_empty' => [
                     'expected_type' => 'boolean',
                     'format' => [
                         'type' => 'enum',
-                        'values' => [true]
-                    ]
+                        'values' => [true],
+                    ],
                 ],
                 'content_length_equals' => [
-                    'expected_type' => 'number'
+                    'expected_type' => 'number',
                 ],
                 'content_length_does_not_equal' => [
-                    'expected_type' => 'number'
+                    'expected_type' => 'number',
                 ],
                 'content_length_greater_than' => [
-                    'expected_type' => 'number'
+                    'expected_type' => 'number',
                 ],
                 'content_length_greater_than_or_equal_to' => [
-                    'expected_type' => 'number'
+                    'expected_type' => 'number',
                 ],
                 'content_length_less_than' => [
-                    'expected_type' => 'number'
+                    'expected_type' => 'number',
                 ],
                 'content_length_less_than_or_equal_to' => [
-                    'expected_type' => 'number'
-                ]
-            ]
+                    'expected_type' => 'number',
+                ],
+            ],
         ],
         'email' => [
             'comparators' => [
@@ -151,35 +150,35 @@ class FormPropertyLogicRule implements Rule, DataAwareRule
                     'expected_type' => 'boolean',
                     'format' => [
                         'type' => 'enum',
-                        'values' => [true]
-                    ]
+                        'values' => [true],
+                    ],
                 ],
                 'is_not_empty' => [
                     'expected_type' => 'boolean',
                     'format' => [
                         'type' => 'enum',
-                        'values' => [true]
-                    ]
+                        'values' => [true],
+                    ],
                 ],
                 'content_length_equals' => [
-                    'expected_type' => 'number'
+                    'expected_type' => 'number',
                 ],
                 'content_length_does_not_equal' => [
-                    'expected_type' => 'number'
+                    'expected_type' => 'number',
                 ],
                 'content_length_greater_than' => [
-                    'expected_type' => 'number'
+                    'expected_type' => 'number',
                 ],
                 'content_length_greater_than_or_equal_to' => [
-                    'expected_type' => 'number'
+                    'expected_type' => 'number',
                 ],
                 'content_length_less_than' => [
-                    'expected_type' => 'number'
+                    'expected_type' => 'number',
                 ],
                 'content_length_less_than_or_equal_to' => [
-                    'expected_type' => 'number'
-                ]
-            ]
+                    'expected_type' => 'number',
+                ],
+            ],
         ],
         'phone_number' => [
             'comparators' => [
@@ -205,35 +204,35 @@ class FormPropertyLogicRule implements Rule, DataAwareRule
                     'expected_type' => 'boolean',
                     'format' => [
                         'type' => 'enum',
-                        'values' => [true]
-                    ]
+                        'values' => [true],
+                    ],
                 ],
                 'is_not_empty' => [
                     'expected_type' => 'boolean',
                     'format' => [
                         'type' => 'enum',
-                        'values' => [true]
-                    ]
+                        'values' => [true],
+                    ],
                 ],
                 'content_length_equals' => [
-                    'expected_type' => 'number'
+                    'expected_type' => 'number',
                 ],
                 'content_length_does_not_equal' => [
-                    'expected_type' => 'number'
+                    'expected_type' => 'number',
                 ],
                 'content_length_greater_than' => [
-                    'expected_type' => 'number'
+                    'expected_type' => 'number',
                 ],
                 'content_length_greater_than_or_equal_to' => [
-                    'expected_type' => 'number'
+                    'expected_type' => 'number',
                 ],
                 'content_length_less_than' => [
-                    'expected_type' => 'number'
+                    'expected_type' => 'number',
                 ],
                 'content_length_less_than_or_equal_to' => [
-                    'expected_type' => 'number'
-                ]
-            ]
+                    'expected_type' => 'number',
+                ],
+            ],
         ],
         'number' => [
             'comparators' => [
@@ -259,35 +258,197 @@ class FormPropertyLogicRule implements Rule, DataAwareRule
                     'expected_type' => 'boolean',
                     'format' => [
                         'type' => 'enum',
-                        'values' => [true]
-                    ]
+                        'values' => [true],
+                    ],
                 ],
                 'is_not_empty' => [
                     'expected_type' => 'boolean',
                     'format' => [
                         'type' => 'enum',
-                        'values' => [true]
-                    ]
+                        'values' => [true],
+                    ],
                 ],
                 'content_length_equals' => [
-                    'expected_type' => 'number'
+                    'expected_type' => 'number',
                 ],
                 'content_length_does_not_equal' => [
-                    'expected_type' => 'number'
+                    'expected_type' => 'number',
                 ],
                 'content_length_greater_than' => [
-                    'expected_type' => 'number'
+                    'expected_type' => 'number',
                 ],
                 'content_length_greater_than_or_equal_to' => [
-                    'expected_type' => 'number'
+                    'expected_type' => 'number',
                 ],
                 'content_length_less_than' => [
-                    'expected_type' => 'number'
+                    'expected_type' => 'number',
                 ],
                 'content_length_less_than_or_equal_to' => [
-                    'expected_type' => 'number'
-                ]
-            ]
+                    'expected_type' => 'number',
+                ],
+            ],
+        ],
+        'rating' => [
+            'comparators' => [
+                'equals' => [
+                    'expected_type' => 'number',
+                ],
+                'does_not_equal' => [
+                    'expected_type' => 'number',
+                ],
+                'greater_than' => [
+                    'expected_type' => 'number',
+                ],
+                'less_than' => [
+                    'expected_type' => 'number',
+                ],
+                'greater_than_or_equal_to' => [
+                    'expected_type' => 'number',
+                ],
+                'less_than_or_equal_to' => [
+                    'expected_type' => 'number',
+                ],
+                'is_empty' => [
+                    'expected_type' => 'boolean',
+                    'format' => [
+                        'type' => 'enum',
+                        'values' => [true],
+                    ],
+                ],
+                'is_not_empty' => [
+                    'expected_type' => 'boolean',
+                    'format' => [
+                        'type' => 'enum',
+                        'values' => [true],
+                    ],
+                ],
+                'content_length_equals' => [
+                    'expected_type' => 'number',
+                ],
+                'content_length_does_not_equal' => [
+                    'expected_type' => 'number',
+                ],
+                'content_length_greater_than' => [
+                    'expected_type' => 'number',
+                ],
+                'content_length_greater_than_or_equal_to' => [
+                    'expected_type' => 'number',
+                ],
+                'content_length_less_than' => [
+                    'expected_type' => 'number',
+                ],
+                'content_length_less_than_or_equal_to' => [
+                    'expected_type' => 'number',
+                ],
+            ],
+        ],
+        'scale' => [
+            'comparators' => [
+                'equals' => [
+                    'expected_type' => 'number',
+                ],
+                'does_not_equal' => [
+                    'expected_type' => 'number',
+                ],
+                'greater_than' => [
+                    'expected_type' => 'number',
+                ],
+                'less_than' => [
+                    'expected_type' => 'number',
+                ],
+                'greater_than_or_equal_to' => [
+                    'expected_type' => 'number',
+                ],
+                'less_than_or_equal_to' => [
+                    'expected_type' => 'number',
+                ],
+                'is_empty' => [
+                    'expected_type' => 'boolean',
+                    'format' => [
+                        'type' => 'enum',
+                        'values' => [true],
+                    ],
+                ],
+                'is_not_empty' => [
+                    'expected_type' => 'boolean',
+                    'format' => [
+                        'type' => 'enum',
+                        'values' => [true],
+                    ],
+                ],
+                'content_length_equals' => [
+                    'expected_type' => 'number',
+                ],
+                'content_length_does_not_equal' => [
+                    'expected_type' => 'number',
+                ],
+                'content_length_greater_than' => [
+                    'expected_type' => 'number',
+                ],
+                'content_length_greater_than_or_equal_to' => [
+                    'expected_type' => 'number',
+                ],
+                'content_length_less_than' => [
+                    'expected_type' => 'number',
+                ],
+                'content_length_less_than_or_equal_to' => [
+                    'expected_type' => 'number',
+                ],
+            ],
+        ],
+        'slider' => [
+            'comparators' => [
+                'equals' => [
+                    'expected_type' => 'number',
+                ],
+                'does_not_equal' => [
+                    'expected_type' => 'number',
+                ],
+                'greater_than' => [
+                    'expected_type' => 'number',
+                ],
+                'less_than' => [
+                    'expected_type' => 'number',
+                ],
+                'greater_than_or_equal_to' => [
+                    'expected_type' => 'number',
+                ],
+                'less_than_or_equal_to' => [
+                    'expected_type' => 'number',
+                ],
+                'is_empty' => [
+                    'expected_type' => 'boolean',
+                    'format' => [
+                        'type' => 'enum',
+                        'values' => [true],
+                    ],
+                ],
+                'is_not_empty' => [
+                    'expected_type' => 'boolean',
+                    'format' => [
+                        'type' => 'enum',
+                        'values' => [true],
+                    ],
+                ],
+                'content_length_equals' => [
+                    'expected_type' => 'number',
+                ],
+                'content_length_does_not_equal' => [
+                    'expected_type' => 'number',
+                ],
+                'content_length_greater_than' => [
+                    'expected_type' => 'number',
+                ],
+                'content_length_greater_than_or_equal_to' => [
+                    'expected_type' => 'number',
+                ],
+                'content_length_less_than' => [
+                    'expected_type' => 'number',
+                ],
+                'content_length_less_than_or_equal_to' => [
+                    'expected_type' => 'number',
+                ],
+            ],
         ],
         'checkbox' => [
             'comparators' => [
@@ -295,18 +456,18 @@ class FormPropertyLogicRule implements Rule, DataAwareRule
                     'expected_type' => 'boolean',
                     'format' => [
                         'type' => 'enum',
-                        'values' => [true]
-                    ]
+                        'values' => [true],
+                    ],
                 ],
                 'does_not_equal' => [
                     'expected_type' => 'boolean',
                     'format' => [
                         'type' => 'enum',
-                        'values' => [true]
-                    ]
+                        'values' => [true],
+                    ],
                 ],
 
-            ]
+            ],
         ],
         'select' => [
             'comparators' => [
@@ -320,17 +481,17 @@ class FormPropertyLogicRule implements Rule, DataAwareRule
                     'expected_type' => 'boolean',
                     'format' => [
                         'type' => 'enum',
-                        'values' => [true]
-                    ]
+                        'values' => [true],
+                    ],
                 ],
                 'is_not_empty' => [
                     'expected_type' => 'boolean',
                     'format' => [
                         'type' => 'enum',
-                        'values' => [true]
-                    ]
-                ]
-            ]
+                        'values' => [true],
+                    ],
+                ],
+            ],
         ],
         'multi_select' => [
             'comparators' => [
@@ -338,119 +499,119 @@ class FormPropertyLogicRule implements Rule, DataAwareRule
                     'expected_type' => ['object', 'string'],
                     'format' => [
                         'type' => 'uuid',
-                    ]
+                    ],
                 ],
                 'does_not_contain' => [
                     'expected_type' => ['object', 'string'],
                     'format' => [
                         'type' => 'uuid',
-                    ]
+                    ],
                 ],
                 'is_empty' => [
                     'expected_type' => 'boolean',
                     'format' => [
                         'type' => 'enum',
-                        'values' => [true]
-                    ]
+                        'values' => [true],
+                    ],
                 ],
                 'is_not_empty' => [
                     'expected_type' => 'boolean',
                     'format' => [
                         'type' => 'enum',
-                        'values' => [true]
-                    ]
-                ]
-            ]
+                        'values' => [true],
+                    ],
+                ],
+            ],
         ],
         'date' => [
             'comparators' => [
                 'equals' => [
                     'expected_type' => 'string',
                     'format' => [
-                        'type' => 'date'
-                    ]
+                        'type' => 'date',
+                    ],
                 ],
                 'before' => [
                     'expected_type' => 'string',
                     'format' => [
-                        'type' => 'date'
-                    ]
+                        'type' => 'date',
+                    ],
                 ],
                 'after' => [
                     'expected_type' => 'string',
                     'format' => [
-                        'type' => 'date'
-                    ]
+                        'type' => 'date',
+                    ],
                 ],
                 'on_or_before' => [
                     'expected_type' => 'string',
                     'format' => [
-                        'type' => 'date'
-                    ]
+                        'type' => 'date',
+                    ],
                 ],
                 'on_or_after' => [
                     'expected_type' => 'string',
                     'format' => [
-                        'type' => 'date'
-                    ]
+                        'type' => 'date',
+                    ],
                 ],
                 'is_empty' => [
                     'expected_type' => 'boolean',
                     'format' => [
                         'type' => 'enum',
-                        'values' => [true]
-                    ]
+                        'values' => [true],
+                    ],
                 ],
                 'is_not_empty' => [
                     'expected_type' => 'boolean',
                     'format' => [
                         'type' => 'enum',
-                        'values' => [true]
-                    ]
+                        'values' => [true],
+                    ],
                 ],
                 'past_week' => [
                     'expected_type' => 'object',
                     'format' => [
                         'type' => 'empty',
-                        'values' => '{}'
-                    ]
+                        'values' => '{}',
+                    ],
                 ],
                 'past_month' => [
                     'expected_type' => 'object',
                     'format' => [
                         'type' => 'empty',
-                        'values' => '{}'
-                    ]
+                        'values' => '{}',
+                    ],
                 ],
                 'past_year' => [
                     'expected_type' => 'object',
                     'format' => [
                         'type' => 'empty',
-                        'values' => '{}'
-                    ]
+                        'values' => '{}',
+                    ],
                 ],
                 'next_week' => [
                     'expected_type' => 'object',
                     'format' => [
                         'type' => 'empty',
-                        'values' => '{}'
-                    ]
+                        'values' => '{}',
+                    ],
                 ],
                 'next_month' => [
                     'expected_type' => 'object',
                     'format' => [
                         'type' => 'empty',
-                        'values' => '{}'
-                    ]
+                        'values' => '{}',
+                    ],
                 ],
                 'next_year' => [
                     'expected_type' => 'object',
                     'format' => [
                         'type' => 'empty',
-                        'values' => '{}'
-                    ]
-                ]
-            ]
+                        'values' => '{}',
+                    ],
+                ],
+            ],
         ],
         'files' => [
             'comparators' => [
@@ -458,56 +619,65 @@ class FormPropertyLogicRule implements Rule, DataAwareRule
                     'expected_type' => 'boolean',
                     'format' => [
                         'type' => 'enum',
-                        'values' => [true]
-                    ]
+                        'values' => [true],
+                    ],
                 ],
                 'is_not_empty' => [
                     'expected_type' => 'boolean',
                     'format' => [
                         'type' => 'enum',
-                        'values' => [true]
-                    ]
-                ]
-            ]
+                        'values' => [true],
+                    ],
+                ],
+            ],
         ],
     ];
 
     private $isConditionCorrect = true;
+
     private $isActionCorrect = true;
+
     private $conditionErrors = [];
+
     private $field = [];
+
     private $data = [];
 
-    private function checkBaseCondition($condition) 
+    private function checkBaseCondition($condition)
     {
 
         if (!isset($condition['value'])) {
             $this->isConditionCorrect = false;
             $this->conditionErrors[] = 'missing condition body';
+
             return;
         }
 
         if (!isset($condition['value']['property_meta'])) {
             $this->isConditionCorrect = false;
             $this->conditionErrors[] = 'missing condition property';
+
             return;
         }
 
         if (!isset($condition['value']['property_meta']['type'])) {
             $this->isConditionCorrect = false;
             $this->conditionErrors[] = 'missing condition property type';
+
             return;
         }
-        
+
         if (!isset($condition['value']['operator'])) {
             $this->isConditionCorrect = false;
             $this->conditionErrors[] = 'missing condition operator';
+
             return;
         }
 
         if (!isset($condition['value']['value'])) {
             $this->isConditionCorrect = false;
             $this->conditionErrors[] = 'missing condition value';
+
             return;
         }
 
@@ -518,16 +688,16 @@ class FormPropertyLogicRule implements Rule, DataAwareRule
         if (!isset(self::CONDITION_MAPPING[$typeField])) {
             $this->isConditionCorrect = false;
             $this->conditionErrors[] = 'configuration not found for condition type';
+
             return;
         }
 
         if (!isset(self::CONDITION_MAPPING[$typeField]['comparators'][$operator])) {
             $this->isConditionCorrect = false;
             $this->conditionErrors[] = 'configuration not found for condition operator';
+
             return;
         }
-
-        // TODO: find what's causing the issue when saving this validation rule :(
 
         $type = self::CONDITION_MAPPING[$typeField]['comparators'][$operator]['expected_type'];
 
@@ -559,47 +729,52 @@ class FormPropertyLogicRule implements Rule, DataAwareRule
         ) {
             return false;
         }
+
         return true;
     }
 
-    private function checkConditions($conditions) 
+    private function checkConditions($conditions)
     {
         if (array_key_exists('operatorIdentifier', $conditions)) {
             if (($conditions['operatorIdentifier'] !== 'and') && ($conditions['operatorIdentifier'] !== 'or')) {
                 $this->conditionErrors[] = 'missing operator';
                 $this->isConditionCorrect = false;
+
                 return;
             }
 
             if (isset($conditions['operatorIdentifier']['children'])) {
                 $this->conditionErrors[] = 'extra condition';
                 $this->isConditionCorrect = false;
+
                 return;
             }
 
             if (!is_array($conditions['children'])) {
                 $this->conditionErrors[] = 'wrong sub-condition type';
                 $this->isConditionCorrect = false;
+
                 return;
             }
 
             foreach ($conditions['children'] as &$child) {
                 $this->checkConditions($child);
             }
-        } else if (isset($conditions['identifier'])) {
+        } elseif (isset($conditions['identifier'])) {
             $this->checkBaseCondition($conditions);
         }
     }
 
-    private function checkActions($conditions) 
+    private function checkActions($actions)
     {
-        if (is_array($conditions) && count($conditions) > 0) {
-            foreach($conditions as $val){
-                if (!in_array($val, static::ACTIONS_VALUES) || 
-                    (in_array($this->field["type"], ['nf-text', 'nf-code', 'nf-page-break', 'nf-divider', 'nf-image']) && !in_array($val, ['hide-block'])) ||
-                    (isset($this->field["hidden"]) && $this->field["hidden"] && !in_array($val, ['show-block', 'require-answer'])) || 
-                    (isset($this->field["required"]) && $this->field["required"] && !in_array($val, ['make-it-optional', 'hide-block', 'disable-block'])) || 
-                    (isset($this->field["disabled"]) && $this->field["disabled"] && !in_array($val, ['enable-block', 'require-answer', 'make-it-optional']))
+        if (is_array($actions) && count($actions) > 0) {
+            foreach ($actions as $val) {
+                if (
+                    !in_array($val, static::ACTIONS_VALUES) ||
+                    (in_array($this->field['type'], ['nf-text', 'nf-code', 'nf-page-break', 'nf-divider', 'nf-image']) && !in_array($val, ['hide-block', 'show-block'])) ||
+                    (isset($this->field['hidden']) && $this->field['hidden'] && !in_array($val, ['show-block', 'require-answer'])) ||
+                    (isset($this->field['required']) && $this->field['required'] && !in_array($val, ['make-it-optional', 'hide-block', 'disable-block'])) ||
+                    (isset($this->field['disabled']) && $this->field['disabled'] && !in_array($val, ['enable-block', 'require-answer', 'make-it-optional']))
                 ) {
                     $this->isActionCorrect = false;
                     break;
@@ -617,31 +792,30 @@ class FormPropertyLogicRule implements Rule, DataAwareRule
      * @param  mixed  $value
      * @return bool
      */
-    public function passes($attribute, $value) 
+    public function passes($attribute, $value)
     {
         $this->setProperty($attribute);
-        if(isset($value["conditions"])){
-            $this->checkConditions($value["conditions"]);
+        if (isset($value['conditions'])) {
+            $this->checkConditions($value['conditions']);
             $this->checkActions($value['actions'] ?? null);
         }
 
-        return ($this->isConditionCorrect && $this->isActionCorrect);
+        return $this->isConditionCorrect && $this->isActionCorrect;
     }
 
     /**
      * Get the validation error message.
-     *
      */
-    public function message() 
+    public function message()
     {
         $message = null;
-        if (! $this->isConditionCorrect) {
-            $message = 'The logic conditions for '.$this->field['name'].' are not complete.';
-        } else if (! $this->isActionCorrect) {
-            $message = 'The logic actions for '.$this->field['name'].' are not valid.';
+        if (!$this->isConditionCorrect) {
+            $message = 'The logic conditions for ' . $this->field['name'] . ' are not complete.';
+        } elseif (!$this->isActionCorrect) {
+            $message = 'The logic actions for ' . $this->field['name'] . ' are not valid.';
         }
         if (count($this->conditionErrors) > 0) {
-            return $message . ' Error detail(s): '.implode(', ', $this->conditionErrors);
+            return $message . ' Error detail(s): ' . implode(', ', $this->conditionErrors);
         }
 
         return $message;

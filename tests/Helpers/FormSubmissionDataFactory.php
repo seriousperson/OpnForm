@@ -7,8 +7,7 @@ use Faker;
 
 class FormSubmissionDataFactory
 {
-
-    private Faker\Generator|null $faker;
+    private ?Faker\Generator $faker;
 
     public function __construct(private Form $form)
     {
@@ -40,6 +39,13 @@ class FormSubmissionDataFactory
                 case 'number':
                     $value = $this->faker->numberBetween();
                     break;
+                case 'rating':
+                case 'scale':
+                    $value = $this->faker->numberBetween(1, 5);
+                    break;
+                case 'slider':
+                    $value = $this->faker->numberBetween(0, 50);
+                    break;
                 case 'url':
                     $value = $this->faker->url();
                     break;
@@ -68,24 +74,27 @@ class FormSubmissionDataFactory
     private function generateSelectValue($property)
     {
         $values = [];
-        if (isset($property["select"]["options"]) && count($property["select"]["options"]) > 0) {
-            $values = collect($property["select"]["options"])->map(function ($option) {
+        if (isset($property['select']['options']) && count($property['select']['options']) > 0) {
+            $values = collect($property['select']['options'])->map(function ($option) {
                 return $option['name'];
             })->toArray();
         }
+
         return ($values) ? $this->faker->randomElement($values) : null;
     }
 
     private function generateMultiSelectValues($property)
     {
         $values = [];
-        if (isset($property["multi_select"]["options"]) && count($property["multi_select"]["options"]) > 0) {
-            $values = collect($property["multi_select"]["options"])->map(function ($option) {
+        if (isset($property['multi_select']['options']) && count($property['multi_select']['options']) > 0) {
+            $values = collect($property['multi_select']['options'])->map(function ($option) {
                 return $option['name'];
             })->toArray();
         }
+
         return ($values) ? $this->faker->randomElements(
             $values,
-            $this->faker->numberBetween(1, count($values))) : null;
+            $this->faker->numberBetween(1, count($values))
+        ) : null;
     }
 }

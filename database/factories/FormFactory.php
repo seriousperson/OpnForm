@@ -3,8 +3,8 @@
 namespace Database\Factories;
 
 use App\Models\Forms\Form;
-use App\Models\Workspace;
 use App\Models\User;
+use App\Models\Workspace;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 
@@ -59,9 +59,6 @@ class FormFactory extends Factory
             'title' => $this->faker->text(30),
             'description' => $this->faker->randomHtml(1),
             'visibility' => 'public',
-            'notifies' => false,
-            'send_submission_confirmation' => false,
-            'webhook_url' => null,
             'theme' => $this->faker->randomElement(Form::THEMES),
             'width' => $this->faker->randomElement(Form::WIDTHS),
             'dark_mode' => $this->faker->randomElement(Form::DARK_MODE_VALUES),
@@ -75,17 +72,10 @@ class FormFactory extends Factory
             're_fillable' => false,
             're_fill_button_text' => 'Fill Again',
             'submitted_text' => '<p>Amazing, we saved your answers. Thank you for your time and have a great day!</p>',
-            'notification_sender' => 'OpenForm',
-            'notification_subject' => 'We saved your answers',
-            'notification_body' => 'Hello there 👋 <br>This is a confirmation that your submission was successfully saved.',
-            'notifications_include_submission' => true,
             'use_captcha' => false,
             'can_be_indexed' => true,
             'password' => false,
             'tags' => [],
-            'slack_webhook_url' => null,
-            'discord_webhook_url' => null,
-            'notification_settings' => [],
             'editable_submissions_button_text' => 'Edit submission',
             'confetti_on_submission' => false,
             'seo_meta' => [],
@@ -97,8 +87,6 @@ class FormFactory extends Factory
      * - Adds id
      * - Adds placeholder, prefill, help
      * - Adds notion_name
-     * @param $properties
-     * @return array
      */
     public static function formatProperties($properties): array
     {

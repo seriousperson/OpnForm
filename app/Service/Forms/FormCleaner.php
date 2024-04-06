@@ -1,22 +1,23 @@
 <?php
 
-
 namespace App\Service\Forms;
 
 use App\Http\Requests\UserFormRequest;
 use App\Http\Resources\FormResource;
 use App\Models\Forms\Form;
-use App\Models\Workspace;
 use App\Models\User;
+use App\Models\Workspace;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Stevebauman\Purify\Facades\Purify;
+
 use function collect;
 
 class FormCleaner
 {
     /**
      * All the performed cleanings
+     *
      * @var bool
      */
     private array $cleanings = [];
@@ -27,15 +28,11 @@ class FormCleaner
     private array $customKeys = ['seo_meta'];
 
     private array $formDefaults = [
-        'notifies' => false,
         'no_branding' => false,
-        'webhook_url' => null,
         'database_fields_update' => null,
-        'slack_webhook_url' => null,
-        'discord_webhook_url' => null,
         'editable_submissions' => false,
         'custom_code' => null,
-        'seo_meta' => []
+        'seo_meta' => [],
     ];
 
     private array $fieldDefaults = [
@@ -45,24 +42,19 @@ class FormCleaner
 
     private array $cleaningMessages = [
         // For form
-        'notifies' => "Email notification were disabled.",
-        'no_branding' => "OpenForm branding is not hidden.",
-        'webhook_url' => "Webhook disabled.",
+        'no_branding' => 'OpenForm branding is not hidden.',
         'database_fields_update' => 'Form submission will only create new records (no updates).',
-        'slack_webhook_url' => "Slack webhook disabled.",
-        'discord_webhook_url' => "Discord webhook disabled.",
         'editable_submissions' => 'Users will not be able to edit their submissions.',
         'custom_code' => 'Custom code was disabled',
         'seo_meta' => 'Custom SEO was disabled',
 
         // For fields
-        'file_upload' => "Link field is not a file upload.",
+        'file_upload' => 'Link field is not a file upload.',
         'custom_block' => 'The custom block was removed.',
     ];
 
     /**
      * Returns form data after request ingestion
-     * @return array
      */
     public function getData(): array
     {
@@ -71,7 +63,6 @@ class FormCleaner
 
     /**
      * Returns true if at least one cleaning was done
-     * @return bool
      */
     public function hasCleaned(): bool
     {
@@ -89,6 +80,7 @@ class FormCleaner
                 return $this->cleaningMessages[$cleaning];
             });
         }
+
         return $cleaningMsgs;
     }
 
@@ -106,7 +98,7 @@ class FormCleaner
     /**
      * Create form cleaner instance from existing form
      */
-    public function processForm(Request $request, Form $form) : FormCleaner 
+    public function processForm(Request $request, Form $form): FormCleaner
     {
         $data = (new FormResource($form))->toArray($request);
         $this->data = $this->commonCleaning($data);
@@ -114,15 +106,17 @@ class FormCleaner
         return $this;
     }
 
-    private function isPro(Workspace $workspace) {
+    private function isPro(Workspace $workspace)
+    {
         return $workspace->is_pro;
     }
 
     /**
      * Dry run celanings
+     *
      * @param  User|null  $user
      */
-    public function simulateCleaning(Workspace $workspace): FormCleaner 
+    public function simulateCleaning(Workspace $workspace): FormCleaner
     {
         if (!$this->isPro($workspace)) {
             $this->data = $this->removeProFeatures($this->data, true);
@@ -133,6 +127,7 @@ class FormCleaner
 
     /**
      * Perform Cleanigns
+     *
      * @param  User|null  $user
      * @return $this|array
      */
@@ -211,8 +206,8 @@ class FormCleaner
             $formVal = $this->cleanCustomKeys($key, $formVal);
 
             // Transform boolean values
-            $formVal = (($formVal === 0 || $formVal === "0") ? false : $formVal);
-            $formVal = (($formVal === 1 || $formVal === "1") ? true : $formVal);
+            $formVal = (($formVal === 0 || $formVal === '0') ? false : $formVal);
+            $formVal = (($formVal === 1 || $formVal === '1') ? true : $formVal);
 
             if (!is_null($formVal) && $formVal !== $value) {
                 if (!isset($this->cleanings['form'])) {
@@ -260,10 +255,10 @@ class FormCleaner
                     $newVal[$k] = $val;
                 }
             }
+
             return $newVal;
         }
 
         return $formVal;
     }
-
 }

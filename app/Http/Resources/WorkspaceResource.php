@@ -3,10 +3,11 @@
 namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
-use Illuminate\Support\Facades\Auth;
 
 class WorkspaceResource extends JsonResource
 {
+    public static $wrap = null;
+
     /**
      * Transform the resource into an array.
      *
@@ -15,10 +16,8 @@ class WorkspaceResource extends JsonResource
      */
     public function toArray($request)
     {
-        return [
-            'id' => $this->id,
-            'is_enterprise' => $this->is_enterprise,
-            'is_pro' => $this->is_pro,
-        ];
+        return array_merge(parent::toArray($request), [
+            'max_file_size' => $this->max_file_size / 1000000,
+        ]);
     }
 }

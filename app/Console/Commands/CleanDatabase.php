@@ -3,9 +3,8 @@
 namespace App\Console\Commands;
 
 use App\Models\Forms\FormStatistic;
-use Illuminate\Console\Command;
 use App\Models\Forms\FormView;
-use App\Models\Forms\FormSubmission;
+use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
 
 class CleanDatabase extends Command
@@ -51,37 +50,14 @@ class CleanDatabase extends Command
             ->orderBy('date')
             ->groupBy('form_id', 'date')
             ->get()->each(function ($row) use (&$finalData) {
-                $finalData[$row->form_id."-".$row->date] = [
+                $finalData[$row->form_id.'-'.$row->date] = [
                     'form_id' => $row->form_id,
                     'date' => $row->date,
                     'data' => [
                         'views' => $row->views,
-                        'submissions' => 0
-                    ]
+                        'submissions' => 0,
+                    ],
                 ];
-            });
-
-        // Form Submissions
-        $this->line('Aggregating form submissions...');
-        FormSubmission::select('form_id', DB::raw('DATE(created_at) as date'), DB::raw('count(*) as submissions'))
-            ->whereDate('created_at', '<=', now()->startOfDay())
-            ->orderBy('date')
-            ->groupBy('form_id', 'date')
-            ->get()->each(function ($row) use (&$finalData) {
-                $key = $row->form_id."-".$row->date;
-                if (isset($finalData[$key])) {
-                    $finalData[$key]['data']['submissions'] = $row->submissions;
-                } else {
-                    $finalData[$key] = [
-                        'form_id' => $row->form_id,
-                        'date' => $row->date,
-                        'data' => [
-                            'views' => 0,
-                            'submissions' => $row->submissions
-                        ]
-                    ];
-                }
-
             });
 
         if ($finalData) {
@@ -94,7 +70,7 @@ class CleanDatabase extends Command
                 if ($found !== null) { // If found update
                     $newData = $found->data;
                     $newData['views'] = $newData['views'] + $row['data']['views'];
-                    $newData['submissions'] = $newData['submissions'] + $row['data']['submissions'];
+                    $newData['submissions'] = 0;
                     $found->update(['data' => $newData]);
                     $updated++;
                 } else {  // Otherwise create new
