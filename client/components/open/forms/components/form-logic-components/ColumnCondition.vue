@@ -40,7 +40,9 @@ export default {
         checkbox: 'CheckboxInput',
         url: 'TextInput',
         email: 'TextInput',
-        phone_number: 'TextInput'
+        phone_number: 'TextInput',
+        price: 'PriceInput',
+        select_price: 'SelectPriceInput'
       }
     }
   },
@@ -58,7 +60,7 @@ export default {
         componentData.component = 'PhoneInput'
       }
 
-      if (['select', 'multi_select'].includes(this.property.type)) {
+      if (['select', 'multi_select', 'select_price'].includes(this.property.type)) {
         componentData.multiple = false
         componentData.options = this.property[this.property.type].options.map(option => {
           return {

@@ -123,7 +123,7 @@ export default {
 
   methods: {
     onChangeType (newType) {
-      if (['select', 'multi_select'].includes(this.field.type)) {
+      if (['select', 'multi_select', 'select_price'].includes(this.field.type)) {
         this.field[newType] = this.field[this.field.type] // Set new options with new type
         delete this.field[this.field.type] // remove old type options
       }

@@ -24,8 +24,10 @@
             class="bg-gray-50 border hover:bg-gray-100 dark:bg-gray-900 rounded-md dark:hover:bg-gray-800 py-2 flex flex-col"
             role="button" @click.prevent="addBlock(block.name)">
             <div class="mx-auto">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-500" fill="none" viewBox="0 0 24 24"
-                stroke="currentColor" stroke-width="2" v-html="block.icon"></svg>
+              <span v-if="block.name == 'price'" v-html="block.icon"></span>
+              <span v-else-if="block.name == 'select_price'" v-html="block.icon"></span>
+              <svg v-else xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-500" fill="none" viewBox="0 0 24 24"
+              stroke="currentColor" stroke-width="2" v-html="block.icon"></svg>
             </div>
             <p class="w-full text-xs text-gray-500 uppercase text-center font-semibold mt-1">
               {{ block.title }}
@@ -148,6 +150,16 @@ export default {
           name: 'signature',
           title: 'Signature Input',
           icon: '<path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L6.832 19.82a4.5 4.5 0 01-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 011.13-1.897L16.863 4.487zm0 0L19.5 7.125" />'
+        },
+        {
+          name: 'price',
+          title: 'Priced Item',
+          icon: '$'
+        },
+        {
+          name: 'select_price',
+          title: 'Select Priced Item',
+          icon: '$$$'
         }
       ],
       layoutBlocks: [
@@ -197,6 +209,8 @@ export default {
         multi_select: 'Multi Select',
         files: 'Files',
         signature: 'Signature',
+        price: 'Price',
+        select_price: 'Select Priced Item',
         'nf-text': 'Text Block',
         'nf-page-break': 'Page Break',
         'nf-divider': 'Divider',
@@ -228,7 +242,7 @@ export default {
       const newBlock = this.prefillDefault(this.blockForm.data())
       newBlock.id = this.generateUUID()
       newBlock.hidden = false
-      if (['select', 'multi_select'].includes(this.blockForm.type)) {
+      if (['select', 'multi_select', 'select_price'].includes(this.blockForm.type)) {
         newBlock[this.blockForm.type] = { options: [] }
       }
       if (this.blockForm.type === 'rating') {

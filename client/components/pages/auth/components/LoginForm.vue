@@ -89,6 +89,8 @@ export default {
         this.authStore.setUser(userDataResponse)
         this.workspaceStore.set(workspacesResponse.data.value)
 
+        console.log('LoginForm.login.currentId', this.workspaceStore.currentId);
+
         // Load forms
         this.formsStore.loadAll(this.workspaceStore.currentId)
 

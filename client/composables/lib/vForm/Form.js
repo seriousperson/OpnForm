@@ -2,6 +2,10 @@ import {serialize} from 'object-to-formdata';
 import Errors from './Errors';
 import cloneDeep from 'clone-deep';
 import {opnFetch} from "~/composables/useOpnApi.js";
+import { useUrlHelper } from '~/helper/useUrlHelper';
+
+
+
 function hasFiles(data) {
   return data instanceof File ||
     data instanceof Blob ||
@@ -102,6 +106,7 @@ class Form {
   }
 
   submit(method, url, config = {}) {
+
     this.startProcessing();
 
     config = {
@@ -121,9 +126,13 @@ class Form {
         config.transformRequest = [data => serialize(data)];
       }
     }
+
+    console.log('submit (config) => ', config);
+
     return new Promise((resolve, reject) => {
       opnFetch(config.url, config)
         .then((data) => {
+          console.log('opnFetch response: ', data);
           this.finishProcessing();
           resolve(data);
         }).catch((error) => {
@@ -131,6 +140,7 @@ class Form {
           reject(error)
         })
     });
+
   }
 
   handleErrors(error) {

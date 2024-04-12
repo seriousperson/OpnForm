@@ -111,7 +111,7 @@ export default {
       if (field.type === 'url' && field.file_upload) {
         return 'FileInput'
       }
-      if (['select', 'multi_select'].includes(field.type) && field.without_dropdown) {
+      if (['select', 'multi_select', 'select_price'].includes(field.type) && field.without_dropdown) {
         return 'FlatSelectInput'
       }
       if (field.type === 'checkbox' && field.use_toggle_switch) {
@@ -136,7 +136,9 @@ export default {
         checkbox: 'CheckboxInput',
         url: 'TextInput',
         email: 'TextInput',
-        phone_number: 'TextInput'
+        phone_number: 'TextInput',
+        price: 'PriceInput',
+        select_price: 'SelectPriceInput'
       }[field.type]
     },
     isPublicFormPage() {
@@ -163,7 +165,7 @@ export default {
       // For auto update hidden options
       let fieldsOptions = []
 
-      if (['select', 'multi_select', 'status'].includes(this.field.type)) {
+      if (['select', 'multi_select', 'select_price', 'status'].includes(this.field.type)) {
         fieldsOptions = [...this.field[this.field.type].options]
         if (this.field.hidden_options && this.field.hidden_options.length > 0) {
           fieldsOptions = fieldsOptions.filter((option) => {
@@ -248,7 +250,7 @@ export default {
         showCharLimit: field.show_char_limit || false
       }
 
-      if (['select', 'multi_select'].includes(field.type)) {
+      if (['select', 'multi_select', 'select_price'].includes(field.type)) {
         inputProperties.options = (_has(field, field.type))
           ? field[field.type].options.map(option => {
             return {

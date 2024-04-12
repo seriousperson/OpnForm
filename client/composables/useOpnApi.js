@@ -1,3 +1,4 @@
+import { useUrlHelper } from "~/helper/useUrlHelper";
 import {getDomain, getHost, customDomainUsed} from "~/lib/utils.js";
 
 function addAuthHeader(request, options) {
@@ -72,9 +73,35 @@ export function getOpnRequestsOptions(request, opts) {
 }
 
 export const opnFetch = (request, opts = {}) => {
-  return $fetch(request, getOpnRequestsOptions(request, opts))
+
+  request = useUrlHelper(request, 'fetch');
+
+  console.log('opnFetch request', request);
+
+  let response = $fetch(request, getOpnRequestsOptions(request, opts))
+
+  console.log('opnFetch response', response);
+
+  return response;
+
 }
 
 export const useOpnApi = (request, opts = {}) => {
-  return useFetch(request, getOpnRequestsOptions(request, opts))
+
+  console.log('useOpnApi request before: ', request);
+
+  if(request == 'open/workspaces/' || request.includes('forms/')){
+    request = useUrlHelper(request, 'fetch');  
+  } else {
+    request = useUrlHelper(request, 'api');  
+  }
+
+  console.log('useOpnApi request after:', request);
+
+  let response = useFetch(request, getOpnRequestsOptions(request, opts))
+
+  console.log('useOpnApi response', response);
+
+  return response;
+
 }

@@ -226,7 +226,7 @@ export default {
       // For get values instead of Id for select/multi select options
       const data = this.dataForm.data()
       const selectionFields = this.fields.filter((field) => {
-        return ['select', 'multi_select'].includes(field.type)
+        return ['select', 'multi_select', 'select_price'].includes(field.type)
       })
       selectionFields.forEach((field) => {
         if (data[field.id] !== undefined && data[field.id] !== null && Array.isArray(data[field.id])) {

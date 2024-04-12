@@ -63,10 +63,7 @@ Route::group(['middleware' => 'auth:api'], function () {
             Route::post('/create', [WorkspaceController::class, 'create'])->name('create');
 
             Route::prefix('/{workspaceId}')->group(function () {
-                Route::get(
-                    '/users',
-                    [WorkspaceController::class, 'listUsers']
-                )->name('users.index');
+                Route::get('/users', [WorkspaceController::class, 'listUsers'] )->name('users.index');
 
                 Route::prefix('/databases')->name('databases.')->group(function () {
                     Route::get(

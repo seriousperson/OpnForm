@@ -88,15 +88,19 @@ const loadForm = async (setup=false) => {
   if (formsStore.loading || (form.value && !form.value.is_password_protected)) return Promise.resolve()
 
   if (setup) {
+
+    // console.log('In public load: '+slug);
     const {data, error} = await formsStore.publicLoad(slug)
+    // console.log('Data: ', data, 'error', error);
     if (error.value) {
-      console.error(`Error loading form [${slug}]:`,error.value)
+      // console.error(`Error loading form [${slug}]:`,error.value)
       formsStore.stopLoading()
       return
     }
     formsStore.save(data.value)
   } else {
     try {
+      // console.log('In public fetch: '+slug);
       const data = await formsStore.publicFetch(slug)
       formsStore.save(data)
     } catch (e) {

@@ -154,7 +154,7 @@
     </div>
 
     <!-- select/multiselect Options   -->
-    <div v-if="['select', 'multi_select'].includes(field.type)" class="border-b py-2 px-4">
+    <div v-if="['select', 'multi_select', 'select_price'].includes(field.type)" class="border-b py-2 px-4">
       <h3 class="font-semibold block text-lg">
         Select Options
       </h3>
@@ -232,7 +232,7 @@
         @update:model-value="field.prefill = $event">
         Pre-filled value
       </v-checkbox>
-      <select-input v-else-if="['select', 'multi_select'].includes(field.type)" name="prefill" class="mt-3"
+      <select-input v-else-if="['select', 'multi_select', 'select_price'].includes(field.type)" name="prefill" class="mt-3"
         :form="field" :options="prefillSelectsOptions" label="Pre-filled value"
         :multiple="field.type === 'multi_select'" />
       <date-input v-else-if="field.type === 'date' && field.prefill_today !== true" name="prefill" class="mt-3"
@@ -247,7 +247,7 @@
         :multiple="field.multiple === true" :move-to-form-assets="true" />
       <text-input v-else-if="!['files', 'signature'].includes(field.type)" name="prefill" class="mt-3" :form="field"
         label="Pre-filled value" />
-      <div v-if="['select', 'multi_select'].includes(field.type)" class="-mt-3 mb-3 text-gray-400 dark:text-gray-500">
+      <div v-if="['select', 'multi_select', 'select_price'].includes(field.type)" class="-mt-3 mb-3 text-gray-400 dark:text-gray-500">
         <small>
           A problem? <a href="#" @click.prevent="field.prefill = null">Click here to clear your pre-fill</a>
         </small>
@@ -352,7 +352,7 @@ export default {
       return  (this.form?.workspace && this.form?.workspace.max_file_size) ? this.form?.workspace?.max_file_size : 10
     },
     prefillSelectsOptions() {
-      if (!['select', 'multi_select'].includes(this.field.type)) return {}
+      if (!['select', 'multi_select', 'select_price'].includes(this.field.type)) return {}
 
       return this.field[this.field.type].options.map(option => {
         return {

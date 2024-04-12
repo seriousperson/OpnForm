@@ -54,7 +54,9 @@ class SubmissionConfirmationMail extends OpenFormMail implements ShouldQueue
 
     private function getFromEmail()
     {
-        $originalFromAddress = Str::of(config('mail.from.address'))->explode('@');
+        // to-do::
+        $originalFromAddress = Str::of('Mousta@test.test')->explode('@');
+        // $originalFromAddress = Str::of(config('mail.from.address'))->explode('@');
 
         return $originalFromAddress->first() . '+' . time() . '@' . $originalFromAddress->last();
     }
