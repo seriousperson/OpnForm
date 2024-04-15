@@ -80,7 +80,7 @@ export const opnFetch = (request, opts = {}) => {
 
   let response = $fetch(request, getOpnRequestsOptions(request, opts))
 
-  console.log('opnFetch response', response);
+  // console.log('opnFetch response', response);
 
   return response;
 
@@ -100,7 +100,7 @@ export const useOpnApi = (request, opts = {}) => {
 
   let response = useFetch(request, getOpnRequestsOptions(request, opts))
 
-  console.log('useOpnApi response', response);
+  // console.log('useOpnApi response', response);
 
   return response;
 

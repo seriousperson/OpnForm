@@ -13,7 +13,7 @@
           <template v-if="multiple">
             <div class="flex items-center truncate mr-6">
               <span class="truncate">
-                {{ getOptionNames(selectedValues).join(', ') }}
+                {{ getOptionNames(selectedValues) }}
               </span>
             </div>
           </template>
@@ -55,6 +55,7 @@
 <script>
 import { inputProps, useFormInput } from './useFormInput.js'
 import InputWrapper from './components/InputWrapper.vue'
+import { useDevHelper } from '~/helper/useDevHelper.js'
 
 /**
  * Options: {name,value} objects
@@ -90,6 +91,7 @@ export default {
 
   computed: {
     finalOptions() {
+      // useDevHelper('finalOptions', this.options.concat(this.additionalOptions))
       return this.options.concat(this.additionalOptions)
     }
   },
@@ -102,13 +104,49 @@ export default {
       return null
     },
     getOptionNames(values) {
-      return values.map(val => {
+
+      if(values.length == 0){
+        return ''
+      }
+
+      let returnedValues = values.map(val => {
         return this.getOptionName(val)
-      })
+      }).join(', ')
+
+      return returnedValues
+
     },
     updateModelValue(newValues) {
-      if (newValues === null) newValues = []
+
+      if (newValues === null) {
+        newValues = []
+      }
+
+      let previousValues = this.selectedValues
+      let updatedValues = newValues
+      
       this.selectedValues = newValues
+
+      useDevHelper('updateModelValue', { 
+        before: previousValues,
+        selectedVals: this.selectedValues, 
+        allOptions: this.finalOptions, 
+        newValues: newValues,
+        newValuesTarget: newValues.target
+      });
+
+      if(!Array.isArray(previousValues)){
+        previousValues = [previousValues]
+      }
+      if(!Array.isArray(updatedValues)){
+        updatedValues = [updatedValues]
+      }
+
+      this.$emit('calculate-total', {
+        minus: previousValues,
+        plus: updatedValues
+      });
+
     },
     updateOptions(newItem) {
       if (newItem) {

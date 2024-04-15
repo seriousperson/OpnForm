@@ -3,6 +3,7 @@ import { themes } from '~/lib/forms/form-themes.js'
 import {default as _get} from 'lodash/get'
 import {default as _set} from 'lodash/set'
 import { default as _has } from 'lodash/has'
+import { useDevHelper } from '~/helper/useDevHelper'
 
 export const inputProps = {
   id: { type: String, default: null },
@@ -57,6 +58,7 @@ export function useFormInput (props, context, formPrefixKey = null) {
         props.form.errors.clear(props.name)
       }
 
+      useDevHelper('useFormInput', compVal.value);
       context.emit('update:modelValue', compVal.value)
     }
   })

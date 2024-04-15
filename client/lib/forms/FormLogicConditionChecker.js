@@ -54,6 +54,8 @@ function propertyConditionMet (propertyCondition, value) {
       return multiSelectConditionMet(propertyCondition, value)
     case 'select_price':
       return selectConditionMet(propertyCondition, value)
+    case 'multi_price':
+      return multiSelectConditionMet(propertyCondition, value)
     case 'files':
       return filesConditionMet(propertyCondition, value)
   }

@@ -154,7 +154,7 @@
     </div>
 
     <!-- select/multiselect Options   -->
-    <div v-if="['select', 'multi_select', 'select_price'].includes(field.type)" class="border-b py-2 px-4">
+    <div v-if="['select', 'multi_select', 'select_price', 'multi_price'].includes(field.type)" class="border-b py-2 px-4">
       <h3 class="font-semibold block text-lg">
         Select Options
       </h3>
@@ -175,6 +175,7 @@
         Options won't be in a dropdown anymore, but will all be visible
       </p>
     </div>
+
 
     <!-- Customization - Placeholder, Prefill, Relabel, Field Help    -->
     <div v-if="displayBasedOnAdvanced" class="border-b py-2 px-4">
@@ -232,9 +233,9 @@
         @update:model-value="field.prefill = $event">
         Pre-filled value
       </v-checkbox>
-      <select-input v-else-if="['select', 'multi_select', 'select_price'].includes(field.type)" name="prefill" class="mt-3"
+      <select-input v-else-if="['select', 'multi_select', 'select_price', 'multi_price'].includes(field.type)" name="prefill" class="mt-3"
         :form="field" :options="prefillSelectsOptions" label="Pre-filled value"
-        :multiple="field.type === 'multi_select'" />
+        :multiple="['multi_select', 'multi_price'].includes(field.type)" />
       <date-input v-else-if="field.type === 'date' && field.prefill_today !== true" name="prefill" class="mt-3"
         :form="field" :with-time="field.with_time === true" :date-range="field.date_range === true"
         label="Pre-filled value" />
@@ -247,7 +248,7 @@
         :multiple="field.multiple === true" :move-to-form-assets="true" />
       <text-input v-else-if="!['files', 'signature'].includes(field.type)" name="prefill" class="mt-3" :form="field"
         label="Pre-filled value" />
-      <div v-if="['select', 'multi_select', 'select_price'].includes(field.type)" class="-mt-3 mb-3 text-gray-400 dark:text-gray-500">
+      <div v-if="['select', 'multi_select', 'select_price', 'multi_price'].includes(field.type)" class="-mt-3 mb-3 text-gray-400 dark:text-gray-500">
         <small>
           A problem? <a href="#" @click.prevent="field.prefill = null">Click here to clear your pre-fill</a>
         </small>
@@ -317,6 +318,7 @@ import countryCodes from '~/data/country_codes.json'
 import CountryFlag from 'vue-country-flag-next'
 import FormBlockLogicEditor from '../../components/form-logic-components/FormBlockLogicEditor.vue'
 import { default as _has } from 'lodash/has'
+import { useDevHelper } from '~/helper/useDevHelper'
 
 export default {
   name: 'FieldOptions',
@@ -352,7 +354,7 @@ export default {
       return  (this.form?.workspace && this.form?.workspace.max_file_size) ? this.form?.workspace?.max_file_size : 10
     },
     prefillSelectsOptions() {
-      if (!['select', 'multi_select', 'select_price'].includes(this.field.type)) return {}
+      if (!['select', 'multi_select', 'select_price', 'multi_price'].includes(this.field.type)) return {}
 
       return this.field[this.field.type].options.map(option => {
         return {
@@ -378,8 +380,13 @@ export default {
     },
     optionsText() {
       if (!this.field[this.field.type]) return ''
+      // useDevHelper('optionsText => option', this.field[this.field.type], false)
       return this.field[this.field.type].options.map(option => {
-        return option.name
+        let text = option.text
+        if(text){
+          return text
+        }
+        return ''
       }).join('\n')
     }
   },
@@ -470,12 +477,23 @@ export default {
       }
     },
     onFieldOptionsChange(val) {
+
+      // to-do:: conditional only if priced item
+
       const vals = (val) ? val.trim().split('\n') : []
-      const tmpOpts = vals.map(name => {
+      const tmpOpts = vals.map(row => {
+
+        let optionValues = row.trim().split('=>')
+        
+        console.log('optionValues: ', optionValues);
+
         return {
-          name: name,
-          id: name
+          id: optionValues[0],
+          name: optionValues[0],
+          value: optionValues[1] || null,
+          text: row
         }
+
       })
       this.field[this.field.type] = { options: tmpOpts }
     },

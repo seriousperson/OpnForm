@@ -42,7 +42,8 @@ export default {
         email: 'TextInput',
         phone_number: 'TextInput',
         price: 'PriceInput',
-        select_price: 'SelectPriceInput'
+        select_price: 'SelectInput',
+        multi_price: 'SelectInput',
       }
     }
   },
@@ -60,7 +61,7 @@ export default {
         componentData.component = 'PhoneInput'
       }
 
-      if (['select', 'multi_select', 'select_price'].includes(this.property.type)) {
+      if (['select', 'multi_select', 'select_price', 'multi_price'].includes(this.property.type)) {
         componentData.multiple = false
         componentData.options = this.property[this.property.type].options.map(option => {
           return {

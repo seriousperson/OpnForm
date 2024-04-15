@@ -57,12 +57,13 @@ export const useFormsStore = defineStore('forms', () => {
    * Load a form from the public API
    */
   const publicLoad = (slug) => {
-    console.log('I get here: ', slug);
+    console.log('stores.forms -> publicLoad: ', slug);
     contentStore.startLoading()
     return useOpnApi('/forms/' + slug)
   }
 
   const publicFetch = (slug) => {
+    console.log('stores.forms -> publicFetch: ', slug);
     contentStore.startLoading()
     return opnFetch('/forms/' + slug)
   }

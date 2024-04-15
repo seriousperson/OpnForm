@@ -38,6 +38,7 @@
 <script>
 import { inputProps, useFormInput } from './useFormInput.js'
 import InputWrapper from './components/InputWrapper.vue'
+import { useDevHelper } from '~/helper/useDevHelper.js'
 
 export default {
   name: 'TextInput',
@@ -53,9 +54,19 @@ export default {
     maxCharLimit: { type: Number, required: false, default: null },
     showCharLimit: { type: Boolean, required: false, default: false },
     pattern: { type: String, default: null },
+    fieldType: {type: String, default: null},
+    prefillValue: {type: String, default: null}
   },
 
   setup (props, context) {
+
+    // onMounted(() => {
+    //   setTimeout(() => {
+    //     useDevHelper('PriceInput -> mounted: ', props.prefillValue);
+    //     context.emit('calculate-total', props.compVal);
+    //   }, 5000); // Delay for 2000 milliseconds (2 seconds)
+    // });
+
     const onChange = (event) => {
       if (props.nativeType !== 'file') return
 
@@ -79,6 +90,10 @@ export default {
     charCount () {
       return (this.compVal) ? this.compVal.length : 0
     }
+  },
+  mounted(){
+    useDevHelper('PriceInput -> mounted: ', this.prefillValue);
+    this.$emit('calculate-total', this.prefillValue)
   }
 }
 </script>

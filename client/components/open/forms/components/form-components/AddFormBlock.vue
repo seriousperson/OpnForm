@@ -26,6 +26,7 @@
             <div class="mx-auto">
               <span v-if="block.name == 'price'" v-html="block.icon"></span>
               <span v-else-if="block.name == 'select_price'" v-html="block.icon"></span>
+              <span v-else-if="block.name == 'multi_price'" v-html="block.icon"></span>
               <svg v-else xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-500" fill="none" viewBox="0 0 24 24"
               stroke="currentColor" stroke-width="2" v-html="block.icon"></svg>
             </div>
@@ -160,6 +161,11 @@ export default {
           name: 'select_price',
           title: 'Select Priced Item',
           icon: '$$$'
+        },
+        {
+          name: 'multi_price',
+          title: 'Select Priced Item',
+          icon: '->$ ->$ x->$'
         }
       ],
       layoutBlocks: [
@@ -211,6 +217,7 @@ export default {
         signature: 'Signature',
         price: 'Price',
         select_price: 'Select Priced Item',
+        multi_price: 'Multi Priced Item',
         'nf-text': 'Text Block',
         'nf-page-break': 'Page Break',
         'nf-divider': 'Divider',
@@ -242,7 +249,7 @@ export default {
       const newBlock = this.prefillDefault(this.blockForm.data())
       newBlock.id = this.generateUUID()
       newBlock.hidden = false
-      if (['select', 'multi_select', 'select_price'].includes(this.blockForm.type)) {
+      if (['select', 'multi_select', 'select_price', 'multi_price'].includes(this.blockForm.type)) {
         newBlock[this.blockForm.type] = { options: [] }
       }
       if (this.blockForm.type === 'rating') {

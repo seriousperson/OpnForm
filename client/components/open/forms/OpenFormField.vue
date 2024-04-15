@@ -33,7 +33,7 @@
           </div>
         </div>
       </div>
-      <component :is="getFieldComponents" v-if="getFieldComponents" v-bind="inputProperties(field)"
+      <component :is="getFieldComponents" v-if="getFieldComponents" v-bind="inputProperties(field)" @calculate-total="forwardPriceEvent"
         :required="isFieldRequired" :disabled="isFieldDisabled ? true : null" />
       <template v-else>
         <div v-if="field.type === 'nf-text' && field.content" :id="field.id" :key="field.id" class="nf-text w-full mb-3"
@@ -57,6 +57,7 @@
 import { computed } from 'vue'
 import FormLogicPropertyResolver from "~/lib/forms/FormLogicPropertyResolver.js"
 import { default as _has } from 'lodash/has'
+import { useDevHelper } from '~/helper/useDevHelper'
 
 export default {
   name: 'OpenFormField',
@@ -111,7 +112,7 @@ export default {
       if (field.type === 'url' && field.file_upload) {
         return 'FileInput'
       }
-      if (['select', 'multi_select', 'select_price'].includes(field.type) && field.without_dropdown) {
+      if (['select', 'multi_select', 'select_price', 'multi_price'].includes(field.type) && field.without_dropdown) {
         return 'FlatSelectInput'
       }
       if (field.type === 'checkbox' && field.use_toggle_switch) {
@@ -138,7 +139,8 @@ export default {
         email: 'TextInput',
         phone_number: 'TextInput',
         price: 'PriceInput',
-        select_price: 'SelectPriceInput'
+        select_price: 'SelectInput',
+        multi_price: 'SelectInput'
       }[field.type]
     },
     isPublicFormPage() {
@@ -165,7 +167,7 @@ export default {
       // For auto update hidden options
       let fieldsOptions = []
 
-      if (['select', 'multi_select', 'select_price', 'status'].includes(this.field.type)) {
+      if (['select', 'multi_select', 'select_price', 'multi_price', 'status'].includes(this.field.type)) {
         fieldsOptions = [...this.field[this.field.type].options]
         if (this.field.hidden_options && this.field.hidden_options.length > 0) {
           fieldsOptions = fieldsOptions.filter((option) => {
@@ -247,19 +249,26 @@ export default {
         uppercaseLabels: this.form.uppercase_labels == 1 || this.form.uppercase_labels == true,
         theme: this.theme,
         maxCharLimit: (field.max_char_limit) ? parseInt(field.max_char_limit) : 2000,
-        showCharLimit: field.show_char_limit || false
+        showCharLimit: field.show_char_limit || false,
+        fieldType: field.type,
+        prefillValue: field.prefill,
+        field: field
       }
 
-      if (['select', 'multi_select', 'select_price'].includes(field.type)) {
+      // if(field.type == 'price'){
+      //   useDevHelper('prefill', field.prefill)
+      // }
+
+      if (['select', 'multi_select', 'select_price', 'multi_price'].includes(field.type)) {
         inputProperties.options = (_has(field, field.type))
           ? field[field.type].options.map(option => {
             return {
               name: option.name,
-              value: option.name
+              value: option.value
             }
           })
           : []
-        inputProperties.multiple = (field.type === 'multi_select')
+        inputProperties.multiple = ['multi_select', 'multi_price'].includes(field.type)
         inputProperties.allowCreation = (field.allow_creation === true)
         inputProperties.searchable = (inputProperties.options.length > 4)
       } else if (field.type === 'date') {
@@ -299,6 +308,10 @@ export default {
       }
 
       return inputProperties
+    },
+    forwardPriceEvent(val){
+      useDevHelper('OpenFormField->forwardPriceEvent', val)
+      this.$emit('calculate-total', val)
     }
   }
 }

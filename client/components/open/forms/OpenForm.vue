@@ -42,6 +42,7 @@
               :data-form-value="dataFormValue"
               :theme="theme"
               :admin-preview="adminPreview"
+              @calculate-total="onCalculateTotal"
             />
           </template>
         </draggable>
@@ -56,6 +57,10 @@
       </div>
     </template>
 
+    <div class="mb-3 px-2 mt-2 w-max">
+      Total: {{ total }}
+    </div>
+
     <!--  Submit, Next and previous buttons  -->
     <div class="flex flex-wrap justify-center w-full">
       <open-form-button v-if="currentFieldGroupIndex>0 && previousFieldsPageBreak && !loading" native-type="button"
@@ -66,7 +71,7 @@
 
       <slot v-if="isLastPage" name="submit-btn" :submitForm="submitForm" />
       <open-form-button v-else-if="currentFieldsPageBreak" native-type="button" :color="form.color" :theme="theme" class="mt-2 px-8 mx-1"
-                        @click.stop="nextPage"
+          @click.stop="nextPage"
       >
         {{ currentFieldsPageBreak.next_btn_text }}
       </open-form-button>
@@ -86,6 +91,7 @@ import OpenFormField from './OpenFormField.vue'
 import {pendingSubmission} from "~/composables/forms/pendingSubmission.js"
 import FormLogicPropertyResolver from "~/lib/forms/FormLogicPropertyResolver.js"
 import {darkModeEnabled} from "~/lib/forms/public-page.js"
+import { useDevHelper } from '~/helper/useDevHelper'
 
 export default {
   name: 'OpenForm',
@@ -139,7 +145,8 @@ export default {
       /**
        * If currently dragging a field
        */
-      dragging: false
+      dragging: false,
+      total: 0
     }
   },
 
@@ -226,9 +233,10 @@ export default {
       // For get values instead of Id for select/multi select options
       const data = this.dataForm.data()
       const selectionFields = this.fields.filter((field) => {
-        return ['select', 'multi_select', 'select_price'].includes(field.type)
+        return ['select', 'multi_select', 'select_price', 'multi_price'].includes(field.type)
       })
       selectionFields.forEach((field) => {
+        // console.log('OpenForm => Field', field);
         if (data[field.id] !== undefined && data[field.id] !== null && Array.isArray(data[field.id])) {
           data[field.id] = data[field.id].map(option_nfid => {
             const tmpop = field[field.type].options.find((op) => {
@@ -428,7 +436,50 @@ export default {
     },
     onDragEnd () {
       this.dragging = false
+    },
+onCalculateTotal(val) {
+  // Initialize temporary variables for total of minus and plus values
+  let minusTotal = 0;
+  let plusTotal = 0;
+  let tempTotal = 0
+
+  // Check if val is an object and not null
+  if (typeof val === 'object' && val !== null) {
+
+    // Check if val has a 'minus' property which is an array
+    if (Array.isArray(val.minus)) {
+      // Iterate over the 'minus' array and subtract each value
+      for (let i = 0; i < val.minus.length; i++) {
+        // Ensure that each value is parsed as a float before subtracting
+        minusTotal -= parseFloat(val.minus[i]);
+      }
+    } else {
+      minusTotal = parseFloat(val) * -1
     }
+
+    // Check if val has a 'plus' property which is an array
+    if (Array.isArray(val.plus)) {
+      // Iterate over the 'plus' array and add each value
+      for (let i = 0; i < val.plus.length; i++) {
+        // Ensure that each value is parsed as a float before adding
+        plusTotal += parseFloat(val.plus[i]);
+      }
+    } else {
+      plusTotal = parseFloat(val)
+    }
+
+  } else {
+    plusTotal = parseFloat(val)
+  }
+
+  // Calculate the total by adding plusTotal and minusTotal
+  this.total = Math.round(parseFloat((this.total) + minusTotal + plusTotal) * 100) / 100
+
+  // Optional: log information for debugging
+  useDevHelper('OpenForm.onCalculateTotal', { val: val, minus: minusTotal, plus: plusTotal, total: this.total });
+}
+
+
   }
 }
 </script>
