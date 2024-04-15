@@ -437,48 +437,47 @@ export default {
     onDragEnd () {
       this.dragging = false
     },
-onCalculateTotal(val) {
-  // Initialize temporary variables for total of minus and plus values
-  let minusTotal = 0;
-  let plusTotal = 0;
-  let tempTotal = 0
-
-  // Check if val is an object and not null
-  if (typeof val === 'object' && val !== null) {
-
-    // Check if val has a 'minus' property which is an array
-    if (Array.isArray(val.minus)) {
-      // Iterate over the 'minus' array and subtract each value
-      for (let i = 0; i < val.minus.length; i++) {
-        // Ensure that each value is parsed as a float before subtracting
-        minusTotal -= parseFloat(val.minus[i]);
+    onCalculateTotal(val) {
+      // Initialize temporary variables for total of minus and plus values
+      let minusTotal = 0;
+      let plusTotal = 0;
+      let tempTotal = 0
+    
+      // Check if val is an object and not null
+      if (typeof val === 'object' && val !== null) {
+      
+        // Check if val has a 'minus' property which is an array
+        if (Array.isArray(val.minus)) {
+          // Iterate over the 'minus' array and subtract each value
+          for (let i = 0; i < val.minus.length; i++) {
+            // Ensure that each value is parsed as a float before subtracting
+            minusTotal -= parseFloat(val.minus[i]);
+          }
+        } else {
+          minusTotal = parseFloat(val) * -1
+        }
+      
+        // Check if val has a 'plus' property which is an array
+        if (Array.isArray(val.plus)) {
+          // Iterate over the 'plus' array and add each value
+          for (let i = 0; i < val.plus.length; i++) {
+            // Ensure that each value is parsed as a float before adding
+            plusTotal += parseFloat(val.plus[i]);
+          }
+        } else {
+          plusTotal = parseFloat(val)
+        }
+      
+      } else {
+        plusTotal = parseFloat(val)
       }
-    } else {
-      minusTotal = parseFloat(val) * -1
+    
+      // Calculate the total by adding plusTotal and minusTotal
+      this.total = Math.round(parseFloat((this.total) + minusTotal + plusTotal) * 100) / 100
+    
+      // Optional: log information for debugging
+      useDevHelper('OpenForm.onCalculateTotal', { val: val, minus: minusTotal, plus: plusTotal, total: this.total });
     }
-
-    // Check if val has a 'plus' property which is an array
-    if (Array.isArray(val.plus)) {
-      // Iterate over the 'plus' array and add each value
-      for (let i = 0; i < val.plus.length; i++) {
-        // Ensure that each value is parsed as a float before adding
-        plusTotal += parseFloat(val.plus[i]);
-      }
-    } else {
-      plusTotal = parseFloat(val)
-    }
-
-  } else {
-    plusTotal = parseFloat(val)
-  }
-
-  // Calculate the total by adding plusTotal and minusTotal
-  this.total = Math.round(parseFloat((this.total) + minusTotal + plusTotal) * 100) / 100
-
-  // Optional: log information for debugging
-  useDevHelper('OpenForm.onCalculateTotal', { val: val, minus: minusTotal, plus: plusTotal, total: this.total });
-}
-
 
   }
 }
