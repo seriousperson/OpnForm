@@ -66,6 +66,7 @@ export default {
         return {
           identifier: property.id,
           name: property.name,
+          type: property.type,
           component: (function () {
             return defineComponent({
               extends: ColumnCondition,

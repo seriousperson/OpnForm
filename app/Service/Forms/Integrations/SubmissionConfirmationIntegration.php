@@ -27,7 +27,8 @@ class SubmissionConfirmationIntegration extends AbstractIntegrationHandler
 
     protected function shouldRun(): bool
     {
-        return !(!$this->form->is_pro) && parent::shouldRun() && !$this->riskLimitReached();
+        return parent::shouldRun() && !$this->riskLimitReached();
+        // return !(!$this->form->is_pro) && parent::shouldRun() && !$this->riskLimitReached();
     }
 
     public function handle(): void

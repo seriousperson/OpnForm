@@ -12,7 +12,7 @@
     "icon": "heroicons:paper-airplane-20-solid",
     "section_name": "Notifications",
     "file_name": "SubmissionConfirmationIntegration",
-    "is_pro": true
+    "is_pro": false
   },
   "slack": {
     "name": "Slack Notification",

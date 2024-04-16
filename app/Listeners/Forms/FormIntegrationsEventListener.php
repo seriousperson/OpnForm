@@ -6,6 +6,7 @@ use App\Events\Models\FormIntegrationsEventCreated;
 use App\Mail\Forms\FormIntegrationsEventCreationConfirmationMail;
 use App\Models\Integration\FormIntegrationsEvent;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 
 class FormIntegrationsEventListener implements ShouldQueue
@@ -20,7 +21,9 @@ class FormIntegrationsEventListener implements ShouldQueue
     {
         if ($event->formIntegrationsEvent->status === FormIntegrationsEvent::STATUS_ERROR) {
             $form = $event->formIntegrationsEvent->integration->form;
-            Mail::to($form->creator)->send(new FormIntegrationsEventCreationConfirmationMail($event->formIntegrationsEvent));
+            //to-do:: need to fix
+            Log::debug("FormIntegrationsEventListner.php: ", ['creator email' => $form->creator->email]);
+            Mail::to('moustaphacreator@gmail.com')->send(new FormIntegrationsEventCreationConfirmationMail($event->formIntegrationsEvent));
         }
     }
 }

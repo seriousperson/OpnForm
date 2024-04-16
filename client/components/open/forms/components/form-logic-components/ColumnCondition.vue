@@ -41,9 +41,9 @@ export default {
         url: 'TextInput',
         email: 'TextInput',
         phone_number: 'TextInput',
-        price: 'PriceInput',
-        select_price: 'SelectInput',
-        multi_price: 'SelectInput',
+        // price: 'PriceInput',
+        // select_price: 'SelectInput',
+        // multi_price: 'SelectInput',
       }
     }
   },

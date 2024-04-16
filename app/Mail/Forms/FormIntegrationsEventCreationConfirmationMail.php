@@ -35,8 +35,12 @@ class FormIntegrationsEventCreationConfirmationMail extends OpenFormMail impleme
      */
     public function build()
     {
+
+        //to-do:: need to fix
         $integration = FormIntegration::getIntegration($this->formIntegration->integration_id);
         return $this
+            ->from('formIntegrationsEventCreationConfirmationMail@email.com')
+            ->replyTo('formIntegrationsEventCreationConfirmationMail@email.com')
             ->markdown('mail.form.integrations-event-created', [
                 'form' => $this->form,
                 'integration_name' => $integration['name'] ?? '',

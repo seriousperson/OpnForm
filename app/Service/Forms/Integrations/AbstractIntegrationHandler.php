@@ -9,6 +9,7 @@ use App\Service\Forms\FormSubmissionFormatter;
 use App\Service\Forms\FormLogicConditionChecker;
 use Illuminate\Http\Client\RequestException;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 use Vinkla\Hashids\Facades\Hashids;
 
 abstract class AbstractIntegrationHandler
@@ -45,7 +46,9 @@ abstract class AbstractIntegrationHandler
 
     protected function shouldRun(): bool
     {
-        return $this->logicConditionsMet();
+        $shouldRun = $this->logicConditionsMet();
+        Log::debug("AbstractintegrationHadlerShouldRun: ".$shouldRun? 'Yes' : 'No');
+        return $shouldRun;
     }
 
     protected function getWebhookUrl(): ?string
@@ -89,6 +92,7 @@ abstract class AbstractIntegrationHandler
                 'status' => FormIntegrationsEvent::STATUS_SUCCESS,
             ]);
         } catch (\Exception $e) {
+            Log::error("AbstractIntegrationHandler Error: ", ['Exception' => $e->getMessage()]);
             $this->formIntegration->events()->create([
                 'status' => FormIntegrationsEvent::STATUS_ERROR,
                 'data' => $this->extractEventDataFromException($e),

@@ -2,7 +2,7 @@
   <div class="flex flex-wrap px-4 py-1 -ml-1 -mt-1">
     <select-input ref="ruleSelect" v-model="selectedRule" class="flex-grow ml-1 mr-1 mt-1"
                   wrapper-class="relative" placeholder="Add condition on input field"
-                  :options="groupCtrl.rules" margin-bottom="" :searchable="groupCtrl.rules.length > 5"
+                  :options="filteredRules" margin-bottom="" :searchable="groupCtrl.rules.length > 5"
                   emit-key="identifier"
                   option-key="identifier"
                   name="group-control-slot-rule"
@@ -17,12 +17,20 @@
 </template>
 
 <script>
+import { useDevHelper } from '~/helper/useDevHelper'
+
 export default {
   components: {},
   props: { groupCtrl: { type: Object, required: true } },
   data () {
     return {
       selectedRule: null
+    }
+  },
+  computed: {
+    // Filter rules array to exclude rules with types "price", "multi_price", and "select_price"
+    filteredRules() {
+      return this.groupCtrl.rules.filter(rule => !['price', 'multi_price', 'select_price'].includes(rule.type));
     }
   },
   methods: {
@@ -33,6 +41,9 @@ export default {
         this.selectedRule = null
       }
     }
+  },
+  mounted(){
+    useDevHelper('options', this.groupCtrl);
   }
 
 }

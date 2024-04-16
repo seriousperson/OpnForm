@@ -29,8 +29,10 @@
       </tr>
       <tr v-for="row, index in data" :key="row.id" class="n-table-row" :class="{ 'first': index === 0 }">
         <td v-for="col, colIndex in columns" :key="col.id" :style="{ width: col.cell_width + 'px' }"
-          class="n-table-cell border-gray-100 dark:border-gray-900 text-sm p-2 overflow-hidden" :class="[{ 'border-b': index !== data.length - 1, 'border-r': colIndex !== columns.length - 1 || hasActions },
-  colClasses(col)]">
+          class="n-table-cell border-gray-100 dark:border-gray-900 text-sm p-2 overflow-hidden" 
+          :class="[{ 'border-b': index !== data.length - 1, 'border-r': colIndex !== columns.length - 1 || hasActions },
+          colClasses(col)]"
+        >
           <component :is="fieldComponents[col.type]" class="border-gray-100 dark:border-gray-900" :property="col"
             :value="row[col.id]" />
         </td>
@@ -126,7 +128,10 @@ export default {
         url: shallowRef(OpenUrl),
         email: shallowRef(OpenText),
         phone_number: shallowRef(OpenText),
-        signature: shallowRef(OpenFile)
+        signature: shallowRef(OpenFile),
+        select_price: shallowRef(OpenSelect),
+        multi_price: shallowRef(OpenSelect),
+        price: shallowRef(OpenText),
       }
     }
   },

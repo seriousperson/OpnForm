@@ -32,6 +32,7 @@ class EmailIntegration extends AbstractIntegrationHandler
             ->filter(function ($email) {
                 return filter_var($email, FILTER_VALIDATE_EMAIL);
             });
+            
         Log::debug('Sending email notification', [
             'recipients' => $subscribers->toArray(),
             'form_id' => $this->form->id,

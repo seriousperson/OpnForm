@@ -289,6 +289,28 @@
       }
     }
   },
+  "price": {
+    "comparators": {
+      "equals": {
+        "expected_type": "number"
+      },
+      "does_not_equal": {
+        "expected_type": "number"
+      },
+      "greater_than": {
+        "expected_type": "number"
+      },
+      "less_than": {
+        "expected_type": "number"
+      },
+      "greater_than_or_equal_to": {
+        "expected_type": "number"
+      },
+      "less_than_or_equal_to": {
+        "expected_type": "number"
+      }
+    }
+  },
   "rating": {
     "comparators": {
       "equals": {
@@ -513,7 +535,69 @@
       }
     }
   },
+  "slect_price": {
+    "comparators": {
+      "equals": {
+        "expected_type": "number"
+      },
+      "does_not_equal": {
+        "expected_type": "number"
+      },
+      "is_empty": {
+        "expected_type": "boolean",
+        "format": {
+          "type": "enum",
+          "values": [
+            true
+          ]
+        }
+      },
+      "is_not_empty": {
+        "expected_type": "boolean",
+        "format": {
+          "type": "enum",
+          "values": [
+            true
+          ]
+        }
+      }
+    }
+  },
   "multi_select": {
+    "comparators": {
+      "contains": {
+        "expected_type": ["object", "string"],
+        "format": {
+          "type": "uuid"
+        }
+      },
+      "does_not_contain": {
+        "expected_type": ["object", "string"],
+        "format": {
+          "type": "uuid"
+        }
+      },
+      "is_empty": {
+        "expected_type": "boolean",
+        "format": {
+          "type": "enum",
+          "values": [
+            true
+          ]
+        }
+      },
+      "is_not_empty": {
+        "expected_type": "boolean",
+        "format": {
+          "type": "enum",
+          "values": [
+            true
+          ]
+        }
+      }
+    }
+  },
+  "multi_price": {
     "comparators": {
       "contains": {
         "expected_type": ["object", "string"],

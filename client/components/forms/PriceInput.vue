@@ -5,8 +5,7 @@
     <template #label>
       <slot name="label" />
     </template>
-
-    <input :id="id?id:name" v-model="compVal" :readonly="readonly"
+    <input :id="id?id:name" v-model="compVal" :readonly="readonly" 
            :type="nativeType" :autocomplete="autocomplete"
            :pattern="pattern"
            :style="inputStyle"
