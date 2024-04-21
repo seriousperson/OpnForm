@@ -13,7 +13,7 @@ return [
     |
     */
 
-    'name' => env('APP_NAME', 'OpnForm'),
+    'name' => env('APP_NAME', 'Manchester Chemist Form Builder'),
 
     /*
     |--------------------------------------------------------------------------

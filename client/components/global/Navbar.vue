@@ -5,12 +5,12 @@
         <div class="flex items-center">
           <NuxtLink :to="{ name: user ? 'home' : 'index' }"
                     class="flex-shrink-0 font-semibold hover:no-underline flex items-center">
-            <img src="/img/logo.svg" alt="notion tools logo" class="w-8 h-8"/>
-            <span class="ml-2 text-md hidden sm:inline text-black dark:text-white">OpnForm</span>
+            <img src="/img/logo.png" alt="notion tools logo" class="w-8 h-8"/>
+            <span class="ml-2 text-md hidden sm:inline text-black dark:text-white">Manchester Chemist Form Builder</span>
           </NuxtLink>
           <workspace-dropdown class="ml-6"/>
         </div>
-        <div v-if="showAuth" class="hidden md:block ml-auto relative">
+        <!-- <div v-if="showAuth" class="hidden md:block ml-auto relative">
           <NuxtLink v-if="$route.name !== 'templates'" :to="{name:'templates'}"
                     class="text-sm text-gray-600 dark:text-white hover:text-gray-800 cursor-pointer mt-1 mr-8"
           >
@@ -53,7 +53,7 @@
           >
             Help
           </NuxtLink>
-        </div>
+        </div> -->
         <div v-if="showAuth" class="hidden md:block pl-5 border-gray-300 border-r h-5"/>
         <div v-if="showAuth" class="block">
           <div class="flex items-center">
@@ -137,7 +137,7 @@
                     Logout
                   </a>
                 </dropdown>
-                <div v-else class="flex gap-2">
+                <!-- <div v-else class="flex gap-2">
                   <NuxtLink v-if="$route.name !== 'login'" :to="{ name: 'login' }"
                             class="text-gray-600 dark:text-white hover:text-gray-800 dark:hover:text-white px-0 sm:px-3 py-2 rounded-md text-sm"
                             active-class="text-gray-800 dark:text-white"
@@ -149,7 +149,7 @@
                             color="outline-blue" :arrow="true">
                     Create a form
                   </v-button>
-                </div>
+                </div> -->
               </div>
             </div>
           </div>

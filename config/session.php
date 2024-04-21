@@ -126,7 +126,7 @@ return [
 
     'cookie' => env(
         'SESSION_COOKIE',
-        'OpnForm_session'
+        'MCRCHEMIST_FORM_session'
     ),
 
     /*
