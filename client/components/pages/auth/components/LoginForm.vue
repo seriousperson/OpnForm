@@ -17,12 +17,12 @@
           Remember me
         </v-checkbox>
 
-        <div class="w-full md:w-1/2 text-right">
+        <!-- <div class="w-full md:w-1/2 text-right">
           <a href="#" class="text-xs hover:underline text-gray-500 sm:text-sm hover:text-gray-700"
              @click.prevent="showForgotModal=true">
             Forgot your password?
           </a>
-        </div>
+        </div> -->
       </div>
 
       <!-- Submit Button -->
@@ -30,13 +30,13 @@
         Log in to continue
       </v-button>
 
-      <p class="text-gray-500 mt-4">
+      <!-- <p class="text-gray-500 mt-4">
         Don't have an account?
         <a v-if="isQuick" href="#" class="font-semibold ml-1" @click.prevent="$emit('openRegister')">Sign Up</a>
         <NuxtLink v-else :to="{name:'register'}" class="font-semibold ml-1">
           Sign Up
         </NuxtLink>
-      </p>
+      </p> -->
     </form>
   </div>
 </template>

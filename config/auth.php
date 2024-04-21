@@ -46,6 +46,11 @@ return [
             'provider' => 'users',
             'hash' => false,
         ],
+
+        'clinic' => [
+            'driver' => 'session',
+            'provider' => 'clinic_users',
+        ],
     ],
 
     /*
@@ -71,10 +76,10 @@ return [
             'model' => App\Models\User::class,
         ],
 
-        // 'users' => [
-        //     'driver' => 'database',
-        //     'table' => 'users',
-        // ],
+        'clinic_users' => [
+            'driver' => 'database',
+            'table' => App\Models\Clinic\User::class,
+        ],
     ],
 
     /*
