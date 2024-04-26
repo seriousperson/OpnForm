@@ -41,7 +41,7 @@ export const useUrlHelper = (path, requestType) => {
   console.log('Path with Base URL: ', path);
 
   let fullUrl = path;
-  if(!path.startsWith(protocol)){
+  if(!path.startsWith('http')){
     fullUrl = protocol + path;
   }
 
