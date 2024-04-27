@@ -19,7 +19,7 @@ return [
 
     'allowed_methods' => ['*'],
 
-    'allowed_origins' => ['*'],
+    'allowed_origins' => ['https://formbuilder.dazzling-swirles.217-174-247-71.plesk.page'],
 
     'allowed_origins_patterns' => [],
 
