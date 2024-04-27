@@ -15,7 +15,7 @@ return [
     |
     */
 
-    'paths' => ['https://formserver.manchesterchemist.com'],
+    'paths' => ['*'],
 
     'allowed_methods' => ['*'],
 
