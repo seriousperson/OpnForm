@@ -3,7 +3,7 @@ export const useUrlHelper = (path, requestType) => {
   const runTimeConfig = useRuntimeConfig();
 
   // console.log('runTimeConfig => ', runTimeConfig);
-  console.log('App Env: ', runTimeConfig.public.env);
+  console.log('App Env Vars: ', runTimeConfig);
   console.log('Endpoint: ', path);
   console.log('requestType: ', requestType);
 
