@@ -87,9 +87,9 @@ useHead({
       && industry.value.meta_title.length < 60
       && !industry.value.meta_title.toLowerCase().includes('opnform')
     ) {
-      return titleChunk ? `${titleChunk} - OpnForm` : 'Form Templates - OpnForm'
+      return titleChunk ? `${titleChunk} - FormBuilder` : 'Form Templates - FormBuilder'
     }
-    return titleChunk ? titleChunk : 'Form Templates - OpnForm'
+    return titleChunk ? titleChunk : 'Form Templates - FormBuilder'
   }
 })
 

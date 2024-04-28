@@ -138,7 +138,7 @@
         <div class="px-4 mx-auto sm:px-6 lg:px-8 max-w-7xl">
           <div class="text-center">
             <h4 class="text-xl font-bold tracking-tight text-gray-900 sm:text-2xl">
-              How OpnForm works
+              How FormBuilder works
             </h4>
           </div>
 

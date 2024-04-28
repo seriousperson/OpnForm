@@ -55,7 +55,7 @@
     />
     <toggle-switch-input name="no_branding" :form="form" class="mt-4">
       <template #label>
-        Remove OpnForm Branding
+        Remove FormBuilder Branding
         <pro-tag class="ml-1" />
       </template>
     </toggle-switch-input>

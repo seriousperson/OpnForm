@@ -1,6 +1,6 @@
 
 export default {
-  "app_ame": "OpnForm",
+  "app_ame": "FormBuilder",
   "locale": "en",
   "locales": {"en": "EN"},
   "githubAuth": null,

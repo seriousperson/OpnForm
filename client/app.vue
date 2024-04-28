@@ -9,7 +9,7 @@
     >
       <div v-if="announcement && !isIframe" class="bg-nt-blue text-white text-center p-3 relative">
         <a class="text-white font-semibold" href="" target="_blank">🚨
-          OpnForm beta is over 🚨</a>
+          FormBuilder beta is over 🚨</a>
         <div role="button" class="text-white absolute right-0 top-0 p-3 cursor-pointer" @click="announcement=false">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 20 20" fill="currentColor">
             <path fill-rule="evenodd"
@@ -41,14 +41,14 @@ import FeatureBase from "~/components/vendor/FeatureBase.vue";
 export default {
   el: '#app',
 
-  name: 'OpnForm',
+  name: 'FormBuilder',
 
   components: {FeatureBase},
 
   setup() {
     const config = useRuntimeConfig()
     useOpnSeoMeta({
-      title: 'OpnForm',
+      title: 'FormBuilder',
       description: 'Create beautiful forms for free. Unlimited fields, unlimited submissions. It\'s free and it takes less than 1 minute to create your first form.',
       ogImage: '/img/social-preview.jpg',
       robots: () => {
@@ -57,7 +57,7 @@ export default {
     })
     useHead({
       titleTemplate: (titleChunk) => {
-        return titleChunk ? `${titleChunk} - OpnForm` : 'OpnForm';
+        return titleChunk ? `${titleChunk} - FormBuilder` : 'FormBuilder';
       }
     })
 

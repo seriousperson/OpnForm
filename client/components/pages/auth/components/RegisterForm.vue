@@ -136,7 +136,7 @@ export default {
       // AppSumo License
       if (data.appsumo_license === false) {
         useAlert().error('Invalid AppSumo license. This probably happened because this license was already' +
-          ' attached to another OpnForm account. Please contact support.')
+          ' attached to another FormBuilder account. Please contact support.')
       } else if (data.appsumo_license === true) {
         useAlert().success('Your AppSumo license was successfully activated! You now have access to all the' +
           ' features of the AppSumo deal.')

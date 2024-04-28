@@ -8,7 +8,7 @@
         </svg>
       </template>
       <template #title>
-        Login to OpnForm
+        Login to FormBuilder
       </template>
       <div class="px-4">
         <login-form :isQuick="true" @openRegister="openRegister" @afterQuickLogin="afterQuickLogin" />

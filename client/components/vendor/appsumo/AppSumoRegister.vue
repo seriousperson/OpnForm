@@ -15,7 +15,7 @@
     <img src="/img/appsumo/as-Select-dark.png" class="max-w-[300px] mx-auto" alt="AppSumo"/>
 
     <p class="mt-6">
-      <span class="text-red-600">Invalid AppSumo license</span>. The license was probably already attached to an OpnForm account. Please contact support.
+      <span class="text-red-600">Invalid AppSumo license</span>. The license was probably already attached to an FormBuilder account. Please contact support.
     </p>
   </div>
 </template>

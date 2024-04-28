@@ -7,10 +7,10 @@
       </div>
       <modal :show="showPremiumModal" @close="showPremiumModal=false">
         <h2 class="text-nt-blue">
-          OpnForm PRO
+          FormBuilder PRO
         </h2>
         <h4 v-if="user && user.is_subscribed" class="text-center mt-5">
-          We're happy to have you as a Pro customer. If you're having any issue with OpnForm, or if you have a
+          We're happy to have you as a Pro customer. If you're having any issue with FormBuilder, or if you have a
           feature request, please <a href="mailto:contact@opnform.com">contact us</a>.
         </h4>
         <div v-if="!user || !user.is_subscribed" class="mt-4">
@@ -19,7 +19,7 @@
             class="bg-nt-blue text-white px-2 text-xs uppercase inline rounded-full font-semibold mx-1"
           >
           PRO
-        </span> tag are available in the Pro plan of OpnForm. <b>You can play around and try all Pro features
+        </span> tag are available in the Pro plan of FormBuilder. <b>You can play around and try all Pro features
             within
             the form editor, but you can't use them in your real forms</b>. You can subscribe now to gain unlimited
             access

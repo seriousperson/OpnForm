@@ -131,7 +131,7 @@ definePageMeta({
 
 useOpnSeoMeta({
   title: 'Your Forms',
-  description: 'All of your OpnForm are here. Create new forms, or update your existing forms.'
+  description: 'All of your FormBuilder are here. Create new forms, or update your existing forms.'
 })
 
 const authStore = useAuthStore()

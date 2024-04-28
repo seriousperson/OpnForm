@@ -189,16 +189,16 @@
           class="grid max-w-5xl grid-cols-1 mx-auto mt-12 gap-y-12 sm:grid-cols-2 sm:mt-16 sm:gap-x-8 sm:gap-y-12 lg:gap-x-10">
           <div v-for="q in [
             {
-              'question':'Is there a free version of OpnForm available?',
-              'answer':'Yes, OpnForm offers a free version with access to 99% of features, including unlimited forms, submissions, fields, and more. Our goal is to provide robust functionality for all users without limitations.',
+              'question':'Is there a free version of FormBuilder available?',
+              'answer':'Yes, FormBuilder offers a free version with access to 99% of features, including unlimited forms, submissions, fields, and more. Our goal is to provide robust functionality for all users without limitations.',
             },
             {
               'question':'What does the Pro Plan include?',
-              'answer':'The OpnForm Pro Plan is designed to meet the advanced needs of teams and creators. It includes features like form confirmation emails, Slack and Discord notifications, editable submissions, custom domain, custom code integration, larger file uploads, removal of OpnForm branding, priority support, and more.',
+              'answer':'The FormBuilder Pro Plan is designed to meet the advanced needs of teams and creators. It includes features like form confirmation emails, Slack and Discord notifications, editable submissions, custom domain, custom code integration, larger file uploads, removal of FormBuilder branding, priority support, and more.',
             },
             {
               'question':'Can I try the Pro Plan before subscribing?',
-              'answer':'Absolutely! We offer a free 3-day trial of the OpnForm Pro Plan. This allows you to explore all the empowering features and experience the value it brings to your form-building process. The trial is automatically applied.',
+              'answer':'Absolutely! We offer a free 3-day trial of the FormBuilder Pro Plan. This allows you to explore all the empowering features and experience the value it brings to your form-building process. The trial is automatically applied.',
             },
             {
               'question':'Is there a discount for annual plans?',
@@ -206,11 +206,11 @@
             },
             {
               'question':'How does the nonprofit and student discount work?',
-              'answer':'OpnForm is committed to supporting nonprofits and students. We provide an exclusive 50% discount on the Pro Plan for nonprofit organizations and students. This discount helps you make the most of our form builder while staying within your budget.',
+              'answer':'FormBuilder is committed to supporting nonprofits and students. We provide an exclusive 50% discount on the Pro Plan for nonprofit organizations and students. This discount helps you make the most of our form builder while staying within your budget.',
             },
             {
               'question':'Can I cancel or change my plan at any time?',
-              'answer':'Yes, you have the flexibility to upgrade, downgrade, or cancel your OpnForm Pro Plan at any time. Changes will take effect immediately, and you\'ll only be billed based on the plan you\'re currently on.',
+              'answer':'Yes, you have the flexibility to upgrade, downgrade, or cancel your FormBuilder Pro Plan at any time. Changes will take effect immediately, and you\'ll only be billed based on the plan you\'re currently on.',
             },
           ]" :key="q.question">
             <dt class="text-base font-semibold leading-7 text-gray-950 sm:text-lg sm:leading-8">

@@ -101,7 +101,7 @@
         </p>
         <p v-if="!form.no_branding" class="mt-5">
           <a target="_parent" href="https://opnform.com/?utm_source=form&utm_content=create_form_free" class="text-nt-blue hover:underline">
-            Create your form for free with OpnForm
+            Create your form for free with FormBuilder
           </a>
         </p>
       </div>

@@ -25,7 +25,7 @@
         </p>
         <p class="mb-10 mt-4">
           <router-link :to="{name:'index'}">
-            Create your form for free with OpnForm
+            Create your form for free with FormBuilder
           </router-link>
         </p>
       </div>
@@ -178,7 +178,7 @@ useHead({
       // Disable template if custom SEO title
       return titleChunk
     }
-    return titleChunk ? `${titleChunk} - OpnForm` : 'OpnForm';
+    return titleChunk ? `${titleChunk} - FormBuilder` : 'FormBuilder';
   },
   script: [ { src: '/widgets/iframeResizer.contentWindow.min.js' } ]
 })
