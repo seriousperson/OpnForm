@@ -43,12 +43,12 @@
     "is_pro": true,
     "coming_soon": true
   },
-  // "google_sheets": {
-  //   "name": "Google Sheets",
-  //   "icon": "mdi:google-spreadsheet",
-  //   "section_name": "Databases",
-  //   "file_name": "GoogleSheetsIntegration",
-  //   "is_pro": true,
-  //   "coming_soon": true
-  // }
+  "google_sheets": {
+    "name": "Google Sheets",
+    "icon": "mdi:google-spreadsheet",
+    "section_name": "Databases",
+    "file_name": "GoogleSheetsIntegration",
+    "is_pro": true,
+    "coming_soon": true
+  }
 }
