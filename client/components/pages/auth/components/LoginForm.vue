@@ -45,6 +45,7 @@
 import ForgotPasswordModal from '../ForgotPasswordModal.vue'
 import {opnFetch} from "~/composables/useOpnApi.js"
 import {fetchAllWorkspaces} from "~/stores/workspaces.js"
+import { useRoute } from 'vue-router'
 
 export default {
   name: 'LoginForm',
@@ -92,7 +93,8 @@ export default {
         console.log('LoginForm.login.currentId', this.workspaceStore.currentId);
 
         // Load forms
-        this.formsStore.loadAll(this.workspaceStore.currentId)
+        this.formsStore.loadAll(1)
+        // this.formsStore.loadAll(this.workspaceStore.currentId)
 
         // Redirect home.
         this.redirect()

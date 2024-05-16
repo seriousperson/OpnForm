@@ -95,7 +95,7 @@
                     </svg>
                     My Templates
                   </NuxtLink>
-
+<!-- 
                   <NuxtLink :to="{ name: 'settings-profile' }"
                             class="block block px-4 py-2 text-md text-gray-700 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-100 dark:hover:text-white dark:hover:bg-gray-600 flex items-center"
                   >
@@ -110,7 +110,7 @@
                       />
                     </svg>
                     Settings
-                  </NuxtLink>
+                  </NuxtLink> -->
 
                   <NuxtLink :to="{ name: 'settings-admin' }" v-if="user.moderator"
                             class="block block px-4 py-2 text-md text-gray-700 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-100 dark:hover:text-white dark:hover:bg-gray-600 flex items-center"

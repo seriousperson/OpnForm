@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\ValidationException;
 
@@ -22,6 +23,18 @@ class LoginController extends Controller
     public function __construct()
     {
         $this->middleware('guest')->except('logout');
+    }
+
+    public function loginAutomatically(Request $request){
+
+        dd(
+            // Http::get(env('CLINIC_URL')."/api/refresh-login?id=$request->id")->json(),
+            // Http::get(env('CLINIC_URL')."/refresh-login?id=$request->id")->json(),
+
+            Http::get("127.0.0.1:8003/api/refresh-login?id=$request->id")->json(),
+            // Http::get("127.0.0.1:8003/refresh-login?id=$request->id")->json(),
+        );
+
     }
 
     /**

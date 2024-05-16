@@ -104,7 +104,7 @@ export default {
     getChartData () {
       if (!this.form) { return null }
       this.isLoading = true
-      opnFetch('/open/workspaces/' + this.form.workspace_id + '/form-stats/' + this.form.id).then((statsData) => {
+      opnFetch('/open/workspaces/1/form-stats/' + this.form.id).then((statsData) => {
         if (statsData && statsData.views !== undefined) {
           this.chartData.labels = Object.keys(statsData.views)
           this.chartData.datasets[0].data = statsData.views

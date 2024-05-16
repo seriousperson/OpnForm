@@ -9,7 +9,7 @@ export default defineNuxtRouteMiddleware(async(to, from) => {
     const workspaceStore = useWorkspacesStore()
 
     // Load user data and workspaces
-    const [userDataResponse, workspacesResponse] = await Promise.all([useOpnApi('user'), fetchAllWorkspaces()]);
+    const [userDataResponse, workspacesResponse] = await Promise.all([useOpnApi('user', {token: authStore.token}), fetchAllWorkspaces()]);
     authStore.setUser(userDataResponse.data.value)
     workspaceStore.save(workspacesResponse.data.value)
   }

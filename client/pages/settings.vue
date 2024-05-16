@@ -57,18 +57,18 @@
         name: 'Profile',
         route: 'settings-profile'
       },
-      {
-        name: 'Workspace Settings',
-        route: 'settings-workspace'
-      },
-      {
-        name: 'Password',
-        route: 'settings-password'
-      },
-      {
-        name: 'Delete Account',
-        route: 'settings-account'
-      }
+      // {
+      //   name: 'Workspace Settings',
+      //   route: 'settings-workspace'
+      // },
+      // {
+      //   name: 'Password',
+      //   route: 'settings-password'
+      // },
+      // {
+      //   name: 'Delete Account',
+      //   route: 'settings-account'
+      // }
     ]
 
     if (user?.value?.is_subscribed) {

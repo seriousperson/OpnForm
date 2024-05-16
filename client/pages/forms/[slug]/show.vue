@@ -177,7 +177,6 @@ const tabsList = [
 ]
 
 onMounted(() => {
-  console.log('here..');
   workingFormStore.reset()
   if (form.value) {
     workingFormStore.set(form.value)

@@ -5,7 +5,7 @@ export const useAuthStore = defineStore('auth', {
     return {
       token: null,
       admin_token: null,
-      user: null,
+      user: useCookie('user').value || null,
     }
   },
   getters: {
@@ -51,6 +51,7 @@ export const useAuthStore = defineStore('auth', {
       }
 
       this.user = user
+      this.setCookie('user', user)
       this.initServiceClients()
     },
 

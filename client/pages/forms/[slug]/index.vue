@@ -90,9 +90,7 @@ const loadForm = async (setup=false) => {
   if (setup) {
 
     const {data, error} = await formsStore.publicLoad(slug)
-    // console.log('\n\n\npages.slug.index (1)', 'Data: ', data.value, 'error', error);
     if (error.value) {
-      // console.error(`Error loading form [${slug}]:`,error.value)
       formsStore.stopLoading()
       return
     }
@@ -100,7 +98,6 @@ const loadForm = async (setup=false) => {
   } else {
     try {
       const data = await formsStore.publicFetch(slug)
-      // console.log('\n\n\npages.slug.index (2)', 'Data: ', data);
       formsStore.save(data)
     } catch (e) {
       formsStore.stopLoading()
