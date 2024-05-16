@@ -1,15 +1,15 @@
 <template>
   <nav v-if="hasNavbar" class="bg-white dark:bg-notion-dark border-b">
     <div class="max-w-7xl mx-auto px-8">
-      <div class="flex items-center justify-between h-16">
-        <div class="flex items-center">
+      <div class="flex items-center justify-between h-16 mb-6">
+        <!-- <div class="flex items-center">
           <NuxtLink :to="{ name: user ? 'home' : 'index' }"
                     class="flex-shrink-0 font-semibold hover:no-underline flex items-center">
             <img src="/img/logo.png" alt="notion tools logo" class="w-8 h-8"/>
             <span class="ml-2 text-md hidden sm:inline text-black dark:text-white">Manchester Chemist Form Builder</span>
           </NuxtLink>
           <workspace-dropdown class="ml-6"/>
-        </div>
+        </div> -->
         <!-- <div v-if="showAuth" class="hidden md:block ml-auto relative">
           <NuxtLink v-if="$route.name !== 'templates'" :to="{name:'templates'}"
                     class="text-sm text-gray-600 dark:text-white hover:text-gray-800 cursor-pointer mt-1 mr-8"

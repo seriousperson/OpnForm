@@ -121,6 +121,7 @@ import Fuse from 'fuse.js'
 import TextInput from '../components/forms/TextInput.vue'
 import ExtraMenu from '../components/pages/forms/show/ExtraMenu.vue'
 import {refDebounced} from "@vueuse/core"
+import runtimeConfig from '~/runtimeConfig'
 
 definePageMeta({
   middleware: "auth"

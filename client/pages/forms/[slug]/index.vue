@@ -23,11 +23,11 @@
         <p class="mt-6">
           Unfortunately we could not find this form. It may have been deleted.
         </p>
-        <p class="mb-10 mt-4">
+        <!-- <p class="mb-10 mt-4">
           <router-link :to="{name:'index'}">
             Create your form for free with FormBuilder
           </router-link>
-        </p>
+        </p> -->
       </div>
       <div v-else-if="formLoading">
         <p class="text-center mt-6 p-4">

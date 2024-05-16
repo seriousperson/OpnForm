@@ -86,7 +86,7 @@
         Create Template
       </a>
 
-      <a v-track.change_workspace_click="{ form_id: form.id, form_slug: form.slug }" href="#"
+      <!-- <a v-track.change_workspace_click="{ form_id: form.id, form_slug: form.slug }" href="#"
         class="block block px-4 py-2 text-md text-gray-700 dark:text-white hover:bg-gray-100 hover:text-gray-900 dark:text-gray-100 dark:hover:text-white dark:hover:bg-gray-600 flex items-center"
         @click.prevent="showFormWorkspaceModal = true">
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
@@ -96,7 +96,7 @@
         </svg>
 
         Change workspace
-      </a>
+      </a> -->
       <a v-track.delete_form_click="{ form_id: form.id, form_slug: form.slug }" href="#"
         class="block block px-4 py-2 text-md text-red-600 hover:bg-red-50 flex items-center"
         @click.prevent="showDeleteFormModal = true">
