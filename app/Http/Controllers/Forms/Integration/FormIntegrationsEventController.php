@@ -17,7 +17,7 @@ class FormIntegrationsEventController extends Controller
     public function index(string $id, string $integrationid)
     {
         $form = Form::findOrFail((int)$id);
-        $this->authorize('view', $form);
+        //$this->authorize('view', $form);
 
         return FormIntegrationsEventResource::collection(
             FormIntegrationsEvent::where('integration_id', (int)$integrationid)->orderByDesc('created_at')->get()

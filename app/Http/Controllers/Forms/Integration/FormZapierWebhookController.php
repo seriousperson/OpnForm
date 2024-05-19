@@ -20,7 +20,7 @@ class FormZapierWebhookController extends Controller
     public function store(StoreFormZapierWebhookRequest $request)
     {
         $hook = $request->instanciateHook();
-        $this->authorize('store', $hook);
+        //$this->authorize('store', $hook);
 
         $hook->save();
 
@@ -33,7 +33,7 @@ class FormZapierWebhookController extends Controller
     public function delete($id)
     {
         $hook = FormZapierWebhook::findOrFail($id);
-        $this->authorize('store', $hook);
+        //$this->authorize('store', $hook);
 
         $hook->delete();
 

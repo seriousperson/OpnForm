@@ -1,8 +1,7 @@
 import {defineStore} from 'pinia'
 import {useContentStore} from "~/composables/stores/useContentStore.js";
 
-// export const formsEndpoint = '/open/workspaces/{workspaceId}/forms'
-export const formsEndpoint = '/open/workspaces/1/forms'
+export const formsEndpoint = '/open/workspaces/{workspaceId}/forms';
 export const singleFormEndpoint = '/open/forms/{slug}'
 
 export const useFormsStore = defineStore('forms', () => {
@@ -13,7 +12,7 @@ export const useFormsStore = defineStore('forms', () => {
 
   const loadAll = (workspaceId) => {
     contentStore.startLoading()
-    return opnFetch(formsEndpoint.replace('{workspaceId}', workspaceId),{query: {page: currentPage.value}})
+    return opnFetch('/open/workspaces/'+workspaceId+'/forms', {query: {page: currentPage.value}})
       .then((response) => {
         if (currentPage.value === 1) {
           contentStore.resetState()
@@ -48,8 +47,7 @@ export const useFormsStore = defineStore('forms', () => {
 
   const load = (workspaceId, slug) => {
     contentStore.startLoading()
-    // return opnFetch(formsEndpoint.replace('{workspaceId}', workspaceId) + '/' + slug)
-    return opnFetch(formsEndpoint.replace('{workspaceId}', 1) + '/' + slug)
+    return opnFetch('/open/workspaces/'+workspaceId+'/forms/'+slug)
       .finally(() => {
         contentStore.stopLoading()
       })

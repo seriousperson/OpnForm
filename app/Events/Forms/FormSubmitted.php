@@ -14,7 +14,7 @@ class FormSubmitted
     use SerializesModels;
 
     public $form;
-
+    public $submissionId;
     public $data;
 
     /**
@@ -22,8 +22,9 @@ class FormSubmitted
      *
      * @return void
      */
-    public function __construct(Form $form, array $data)
+    public function __construct(Form $form, array $data, $submissionId)
     {
+        $this->submissionId = $submissionId;
         $this->form = $form;
         $this->data = $data;
     }

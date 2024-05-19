@@ -17,7 +17,7 @@ class FormIntegrationsController extends Controller
     public function index(string $id)
     {
         $form = Form::findOrFail((int)$id);
-        $this->authorize('view', $form);
+        //$this->authorize('view', $form);
 
         return FormIntegration::where('form_id', $form->id)->get();
     }
@@ -25,7 +25,7 @@ class FormIntegrationsController extends Controller
     public function create(FormIntegrationsRequest $request, string $id)
     {
         $form = Form::findOrFail((int)$id);
-        $this->authorize('update', $form);
+        //$this->authorize('update', $form);
 
         $formIntegration = FormIntegration::create(
             array_merge([
@@ -42,7 +42,7 @@ class FormIntegrationsController extends Controller
     public function update(FormIntegrationsRequest $request, string $id, string $integrationid)
     {
         $form = Form::findOrFail((int)$id);
-        $this->authorize('update', $form);
+        //$this->authorize('update', $form);
 
         $formIntegration = FormIntegration::findOrFail((int)$integrationid);
         $formIntegration->update($request->toIntegrationData());
@@ -56,7 +56,7 @@ class FormIntegrationsController extends Controller
     public function destroy(string $id, string $integrationid)
     {
         $form = Form::findOrFail((int)$id);
-        $this->authorize('update', $form);
+        //$this->authorize('update', $form);
 
         $formIntegration = FormIntegration::findOrFail((int)$integrationid);
         $formIntegration->delete();

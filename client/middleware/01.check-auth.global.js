@@ -5,7 +5,12 @@ export default defineNuxtRouteMiddleware(async(to, from) => {
   const authStore = useAuthStore()
   authStore.initStore(useCookie('token').value, useCookie('admin_token').value)
 
+  console.log('auth check before. Token: ', authStore.token, 'user', authStore.user);
+
   if (authStore.token && !authStore.user) {
+
+    console.log('use is empty in middleware');
+
     const workspaceStore = useWorkspacesStore()
 
     // Load user data and workspaces

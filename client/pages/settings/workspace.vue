@@ -157,7 +157,7 @@ const saveChanges = () => {
   customDomainsLoading.value = true
 
   // Update the workspace custom domain
-  customDomainsForm.put('/open/workspaces/1/custom-domains', {
+  customDomainsForm.put('/open/workspaces/' + workspace.value.id + '/custom-domains', {
     data: {
       custom_domains: customDomainsForm?.custom_domains?.split('\n')
         .map(domain => domain ? domain.trim() : null)

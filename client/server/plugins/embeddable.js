@@ -6,13 +6,16 @@ export default defineNitroPlugin(nitroApp => {
     // if (routePath && !routePath.startsWith('/forms/')) {
       // Only allow embedding of forms
       response.headers['X-Frame-Options'] = 'sameorigin';
-      const allowedDomains = ['manchesterchemist.com', 'clinic.manchesterchemist.com', 'dev.test:8003'];
+      // response.headers['X-Frame-Options'] = 'sameorigin';
+      const allowedDomains = ['manchesterchemist.com', 'clinic.manchesterchemist.com', 'dev.test:8003', 'dev.test:8005', 'formserver.manchesterchemist.com'];
 
       // Allow embedding in frames or iframes from any origin
-      // response.headers['Content-Security-Policy'] = 'frame-ancestors *';
+      response.headers['Content-Security-Policy'] = 'frame-ancestors *';
+      // response.headers['Content-Security-Policy'] = '*';
       response.headers['Content-Security-Policy'] = `frame-ancestors ${allowedDomains.join(' ')}`;
+      // response.headers['Access-Control-Allow-Origin'] = '*';
     }
 
-    delete response.headers['x-powered-by'];
+    delete response.headers['x-powered-by']; 
   });
 });

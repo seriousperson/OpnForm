@@ -21,6 +21,16 @@ return [
 
     'allowed_origins' => ['*'],
 
+    // 'allowed_origins' => [
+    //     'https://manchesterchemist.com', 
+    //     'https://clinic.manchesterchemist.com', 
+    //     'http://dev.test:8003', 
+    //     'http://dev.test:8005', 
+    //     'http://127.0.0.1:3000',
+    //     'http://localhost:3000',
+    //     'http://formserver.manchesterchemist.com'
+    // ],
+
     'allowed_origins_patterns' => [],
 
     'allowed_headers' => ['*'],

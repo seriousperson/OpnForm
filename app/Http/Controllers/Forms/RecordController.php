@@ -11,7 +11,7 @@ class RecordController extends Controller
     public function delete(Request $request, $id, $recordId)
     {
         $form = Form::findOrFail((int) $id);
-        $this->authorize('delete', $form);
+        //$this->authorize('delete', $form);
 
         $record = $form->submissions()->where('id', $recordId)->firstOrFail();
         $record->delete();

@@ -29,28 +29,31 @@ class FormController extends Controller
 
     public function index($workspaceId)
     {
+
         $workspace = Workspace::findOrFail($workspaceId);
-        $this->authorize('view', $workspace);
-        $this->authorize('viewAny', Form::class);
+        // //$this->authorize('view', $workspace);
+        // //$this->authorize('viewAny', Form::class);
 
         $workspaceIsPro = $workspace->is_pro;
         $forms = $workspace->forms()
             ->orderByDesc('updated_at')
-            ->paginate(10)->through(function (Form $form) use ($workspace, $workspaceIsPro) {
+            ->paginate(10);
+            
+            // ->through(function (Form $form) use ($workspace, $workspaceIsPro) {
 
-                // Add attributes for faster loading
-                $form->extra = (object) [
-                    'loadedWorkspace' => $workspace,
-                    'workspaceIsPro' => $workspaceIsPro,
-                    'userIsOwner' => true,
-                    'cleanings' => $this->formCleaner
-                        ->processForm(request(), $form)
-                        ->simulateCleaning($workspace)
-                        ->getPerformedCleanings(),
-                ];
+            //     // Add attributes for faster loading
+            //     $form->extra = (object) [
+            //         'loadedWorkspace' => $workspace,
+            //         'workspaceIsPro' => $workspaceIsPro,
+            //         'userIsOwner' => true,
+            //         'cleanings' => $this->formCleaner
+            //             ->processForm(request(), $form)
+            //             ->simulateCleaning($workspace)
+            //             ->getPerformedCleanings(),
+            //     ];
 
-                return $form;
-            });
+            //     return $form;
+            // });
 
         return FormResource::collection($forms);
     }
@@ -58,7 +61,7 @@ class FormController extends Controller
     public function show($slug)
     {
         $form = Form::whereSlug($slug)->firstOrFail();
-        $this->authorize('view', $form);
+        //$this->authorize('view', $form);
 
         // Add attributes for faster loading
         $workspace = $form->workspace;
@@ -84,8 +87,8 @@ class FormController extends Controller
     {
         $forms = collect();
         foreach (Auth::user()->workspaces as $workspace) {
-            $this->authorize('view', $workspace);
-            $this->authorize('viewAny', Form::class);
+            //$this->authorize('view', $workspace);
+            //$this->authorize('viewAny', Form::class);
 
             $workspaceIsPro = $workspace->is_pro;
             $newForms = $workspace->forms()->get()->map(function (Form $form) use ($workspace, $workspaceIsPro) {
@@ -107,10 +110,10 @@ class FormController extends Controller
 
     public function store(StoreFormRequest $request)
     {
-        $this->authorize('create', Form::class);
+        //$this->authorize('create', Form::class);
 
         $workspace = Workspace::findOrFail($request->get('workspace_id'));
-        $this->authorize('view', $workspace);
+        //$this->authorize('view', $workspace);
 
         $formData = $this->formCleaner
             ->processRequest($request)
@@ -131,7 +134,7 @@ class FormController extends Controller
     public function update(UpdateFormRequest $request, string $id)
     {
         $form = Form::findOrFail($id);
-        $this->authorize('update', $form);
+        //$this->authorize('update', $form);
 
         $formData = $this->formCleaner
             ->processRequest($request)
@@ -154,7 +157,7 @@ class FormController extends Controller
     public function destroy($id)
     {
         $form = Form::findOrFail($id);
-        $this->authorize('delete', $form);
+        //$this->authorize('delete', $form);
 
         $form->delete();
 
@@ -166,7 +169,7 @@ class FormController extends Controller
     public function duplicate($id)
     {
         $form = Form::findOrFail($id);
-        $this->authorize('update', $form);
+        //$this->authorize('update', $form);
 
         // Create copy
         $formCopy = $form->replicate();
@@ -182,7 +185,7 @@ class FormController extends Controller
     public function regenerateLink($id, $option)
     {
         $form = Form::findOrFail($id);
-        $this->authorize('update', $form);
+        //$this->authorize('update', $form);
 
         if ($option == 'slug') {
             $form->generateSlug();
@@ -202,7 +205,7 @@ class FormController extends Controller
      */
     public function uploadAsset(UploadAssetRequest $request)
     {
-        $this->authorize('viewAny', Form::class);
+        //$this->authorize('viewAny', Form::class);
 
         $fileNameParser = StorageFileNameParser::parse($request->url);
 
@@ -227,7 +230,7 @@ class FormController extends Controller
     public function viewFile($id, $fileName)
     {
         $form = Form::findOrFail($id);
-        $this->authorize('view', $form);
+        //$this->authorize('view', $form);
 
         $path = Str::of(PublicFormController::FILE_UPLOAD_PATH)->replace('?', $form->id) . '/' . $fileName;
         if (!Storage::exists($path)) {
@@ -247,8 +250,8 @@ class FormController extends Controller
         $form =  Form::findOrFail($id);
         $workspace =  Workspace::findOrFail($workspace_id);
 
-        $this->authorize('update', $form);
-        $this->authorize('view', $workspace);
+        //$this->authorize('update', $form);
+        //$this->authorize('view', $workspace);
 
         $form->workspace_id = $workspace_id;
         $form->creator_id = auth()->user()->id;

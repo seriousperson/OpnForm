@@ -71,6 +71,8 @@ abstract class AbstractIntegrationHandler
         }
 
         $data = [
+            'form_id' => $this->form->id,
+            'submission_id' => $this->submissionData['submission_id'],
             'form_title' => $this->form->title,
             'form_slug' => $this->form->slug,
             'submission' => $formattedData,
@@ -108,7 +110,7 @@ abstract class AbstractIntegrationHandler
         if (!$this->shouldRun()) {
             return;
         }
-
+        Log::debug('webhook URL: '.$this->getWebhookUrl());
         Http::throw()->post($this->getWebhookUrl(), $this->getWebhookData());
     }
 

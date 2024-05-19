@@ -137,6 +137,9 @@ const formsStore = useFormsStore()
 const workspacesStore = useWorkspacesStore()
 formsStore.startLoading()
 
+console.log('Token from cookies', useCookie('token').value)
+console.log('User from cookies', useCookie('user').value) 
+
 onMounted(() => {
   if (!formsStore.allLoaded) {
     formsStore.loadAll(workspacesStore.currentId)

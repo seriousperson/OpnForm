@@ -15,6 +15,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Vinkla\Hashids\Facades\Hashids;
@@ -50,7 +51,7 @@ class StoreFormSubmissionJob implements ShouldQueue
         $this->storeSubmission($formData);
 
         $formData['submission_id'] = $this->submissionId;
-        FormSubmitted::dispatch($this->form, $formData);
+        FormSubmitted::dispatch($this->form, $formData, $this->submissionId);
     }
 
     public function getSubmissionId()
@@ -202,7 +203,7 @@ class StoreFormSubmissionJob implements ShouldQueue
         $newPath = Str::of(PublicFormController::FILE_UPLOAD_PATH)->replace('?', $this->form->id);
         $completeNewFilename = $newPath.'/'.$fileNameParser->getMovedFileName();
 
-        \Log::debug('Moving file to permanent storage.', [
+        Log::debug('Moving file to permanent storage.', [
             'uuid' => $fileNameParser->uuid,
             'destination' => $completeNewFilename,
             'form_id' => $this->form->id,

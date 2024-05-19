@@ -45,6 +45,9 @@ export const useAuthStore = defineStore('auth', {
     },
 
     setUser(user) {
+
+      console.log('Setting User: ', user)
+
       if (!user) {
         console.error('No user, logging out.')
         this.setToken(null)

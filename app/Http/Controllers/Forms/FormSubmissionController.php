@@ -25,8 +25,9 @@ class FormSubmissionController extends Controller
 
     public function submissions(string $id)
     {
+
         $form = Form::findOrFail((int) $id);
-        $this->authorize('view', $form);
+        //$this->authorize('view', $form);
 
         return FormSubmissionResource::collection($form->submissions()->paginate(100));
     }
@@ -34,7 +35,7 @@ class FormSubmissionController extends Controller
     public function update(AnswerFormRequest $request, $id, $submissionId)
     {
         $form = $request->form;
-        $this->authorize('update', $form);
+        //$this->authorize('update', $form);
         $job = new StoreFormSubmissionJob($request->form, $request->validated());
         $job->setSubmissionId($submissionId)->handle();
 
@@ -49,7 +50,7 @@ class FormSubmissionController extends Controller
     public function export(string $id)
     {
         $form = Form::findOrFail((int) $id);
-        $this->authorize('view', $form);
+        //$this->authorize('view', $form);
 
         $allRows = [];
         foreach ($form->submissions->toArray() as $row) {

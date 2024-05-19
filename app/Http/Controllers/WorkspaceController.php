@@ -18,7 +18,7 @@ class WorkspaceController extends Controller
 
     public function index()
     {
-        $this->authorize('viewAny', Workspace::class);
+        //$this->authorize('viewAny', Workspace::class);
 
         return WorkspaceResource::collection(Auth::user()->workspaces);
     }
@@ -26,7 +26,7 @@ class WorkspaceController extends Controller
     public function listUsers(Request $request, $workspaceId)
     {
         $workspace = Workspace::findOrFail($workspaceId);
-        $this->authorize('view', $workspace);
+        //$this->authorize('view', $workspace);
 
         return (new WorkspaceHelper($workspace))->getAllUsers();
     }
@@ -42,7 +42,7 @@ class WorkspaceController extends Controller
     public function delete($id)
     {
         $workspace = Workspace::findOrFail($id);
-        $this->authorize('delete', $workspace);
+        //$this->authorize('delete', $workspace);
 
         $id = $workspace->id;
         $workspace->delete();

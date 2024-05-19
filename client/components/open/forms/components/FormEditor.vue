@@ -266,7 +266,7 @@ export default {
     },
     saveFormCreate () {
       if (this.updateFormLoading) return
-      this.form.workspace_id = 1
+      this.form.workspace_id = this.workspace.id
       this.validationErrorResponse = null
 
       this.updateFormLoading = true

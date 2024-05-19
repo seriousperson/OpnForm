@@ -17,8 +17,7 @@ export const useWorkspacesStore = defineStore('workspaces', () => {
 
   const setCurrentId = (id) => {
     currentId.value = id
-    // storedWorkspaceId.value = id
-    storedWorkspaceId.value = 1
+    storedWorkspaceId.value = id
   }
 
   const set = (items) => {
