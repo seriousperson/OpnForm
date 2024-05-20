@@ -478,21 +478,23 @@ export default {
     },
     onFieldOptionsChange(val) {
 
-      // to-do:: conditional only if priced item
-
       const vals = (val) ? val.trim().split('\n') : []
       const tmpOpts = vals.map(row => {
 
-        let optionValues = row.trim().split('=>')
-        
-        console.log('optionValues: ', optionValues);
+        console.log('select value', row)
 
-        return {
-          id: optionValues[0],
-          name: optionValues[0],
-          value: optionValues[1] || null,
+        let optionValues = row.trim().split('=>')        
+
+        let parsedValues = {
+          id: optionValues[0].trim(),
+          name: optionValues[0].trim(),
+          value: optionValues[1] ? optionValues[1].trim() : optionValues[0].trim(),
           text: row
         }
+
+        console.log('parsed values', parsedValues);
+        
+        return parsedValues
 
       })
       this.field[this.field.type] = { options: tmpOpts }

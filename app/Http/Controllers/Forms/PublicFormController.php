@@ -81,24 +81,42 @@ class PublicFormController extends Controller
     {
         $form = $request->form;
         $submissionId = false;
+        $rawSubmissionId = null;
 
         if ($form->editable_submissions) {
             $job = new StoreFormSubmissionJob($form, $request->validated());
             $job->handle();
             $submissionId = Hashids::encode($job->getSubmissionId());
+            $rawSubmissionId = $job->getSubmissionId();
         } else {
-            StoreFormSubmissionJob::dispatch($form, $request->validated());
+            // StoreFormSubmissionJob::dispatch($form, $request->validated());
+            $job = new StoreFormSubmissionJob($form, $request->validated());
+            $job->handle();
+            $submissionId = Hashids::encode($job->getSubmissionId());
+            $rawSubmissionId = $job->getSubmissionId();
         }
+
+        // return $this->success(array_merge([
+        //     'message' => 'Form submission saved.',
+        //     'submission_id' => $submissionId,
+        // ], $request->form->is_pro && $request->form->redirect_url ? [
+        //     'redirect' => true,
+        //     'redirect_url' => $request->form->redirect_url,
+        // ] : [
+        //     'redirect' => false,
+        // ]));
 
         return $this->success(array_merge([
             'message' => 'Form submission saved.',
             'submission_id' => $submissionId,
-        ], $request->form->is_pro && $request->form->redirect_url ? [
+            'raw_submission_id' => $rawSubmissionId
+        ], $request->form->redirect_url ? [
             'redirect' => true,
             'redirect_url' => $request->form->redirect_url,
         ] : [
             'redirect' => false,
         ]));
+
     }
 
     public function fetchSubmission(Request $request, string $slug, string $submissionId)

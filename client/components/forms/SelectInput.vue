@@ -28,7 +28,7 @@
         <slot name="option" :option="option" :selected="selected">
           <span class="flex group-hover:text-white">
             <p class="flex-grow group-hover:text-white">
-              {{ option.name }}
+              {{ option.name  }}
             </p>
             <span v-if="selected" class="absolute inset-y-0 right-0 flex items-center pr-4 dark:text-white">
               <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
@@ -77,12 +77,14 @@ export default {
   },
 
   setup(props, context) {
+
     return {
       ...useFormInput(props, context)
     }
   },
 
   data() {
+
     return {
       additionalOptions: [],
       selectedValues: [],
@@ -91,17 +93,50 @@ export default {
 
   computed: {
     finalOptions() {
-      // useDevHelper('finalOptions', this.options.concat(this.additionalOptions))
+      useDevHelper(
+        'options', this.options, 
+        'additionalOptions', this.additionalOptions, 
+        'finalOptions', this.options.concat(this.additionalOptions)
+      )
       return this.options.concat(this.additionalOptions)
     }
   },
   methods: {
     getOptionName(val) {
+
+      console.log('isMultiple', this.$props)
+
+      console.log('getOptionName->val', val)
       const option = this.finalOptions.find((optionCandidate) => {
         return optionCandidate[this.optionKey] === val
       })
-      if (option) return option[this.displayKey]
+
+      console.log('getOptionName->displayKey', this.displayKey)
+      
+      if (option) {
+
+        // return option[this.displayKey]
+
+        console.log(
+          'getOptionName Option Name', option[this.displayKey], 
+          'optionValue', val,
+          'typeof val', typeof val,
+        )
+
+        if (typeof val === 'string') {
+          val = parseFloat(val);
+        }
+
+        // Detect priced item
+        if(!isNaN(val) && (typeof val === 'number') && (option[this.displayKey] !== val)){
+          return `${option[this.displayKey]} - £${val}`  
+        } else {
+          return option[this.displayKey]
+        }
+      }
+
       return null
+
     },
     getOptionNames(values) {
 
@@ -117,6 +152,8 @@ export default {
 
     },
     updateModelValue(newValues) {
+
+      console.log('neValues', newValues)
 
       if (newValues === null) {
         newValues = []
@@ -142,13 +179,20 @@ export default {
         updatedValues = [updatedValues]
       }
 
-      this.$emit('calculate-total', {
-        minus: previousValues,
-        plus: updatedValues
-      });
+      // typeof previousValues === 'number'? previousValues
 
+      let priceEventValues = {
+        minus: previousValues,
+        plus: updatedValues,
+      }
+
+      console.log('SelectInput->updateModalValue->priceEventValues', priceEventValues)
+
+      this.$emit('calculate-total', priceEventValues);
+        
     },
     updateOptions(newItem) {
+      console.log('updateOptions', newItem)
       if (newItem) {
         this.additionalOptions.push(newItem)
       }

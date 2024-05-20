@@ -57,9 +57,9 @@
       </div>
     </template>
 
-    <div class="mb-3 px-2 mt-2 w-max">
-      Total: {{ total }}
-    </div>
+    <!-- <div class="mb-3 px-2 mt-2 w-max">
+      Total: £{{ total }}
+    </div> -->
 
     <!--  Submit, Next and previous buttons  -->
     <div class="flex flex-wrap justify-center w-full">
@@ -472,11 +472,17 @@ export default {
         plusTotal = parseFloat(val)
       }
     
+      useDevHelper('OpenForm.onCalculateTotal 1', { val: val, minus: minusTotal, plus: plusTotal, total: this.total });
+
       // Calculate the total by adding plusTotal and minusTotal
       this.total = Math.round(parseFloat((this.total) + minusTotal + plusTotal) * 100) / 100
+      if(isNaN(this.total)){
+        this.total = 0
+      }
     
       // Optional: log information for debugging
       useDevHelper('OpenForm.onCalculateTotal', { val: val, minus: minusTotal, plus: plusTotal, total: this.total });
+
     }
 
   }

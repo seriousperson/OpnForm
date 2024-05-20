@@ -199,7 +199,11 @@ export default {
         this.pendingSubmission.remove()
 
         if (data.redirect && data.redirect_url) {
-          window.location.href = data.redirect_url
+          let redirectUrl = `${data.redirect_url}&submission_id=${data.raw_submission_id}`
+          if(redirectUrl.includes('localhost')){
+            redirectUrl = redirectUrl.replace('localhost', 'dev.test')
+          }
+          window.location.href = redirectUrl
         }
 
         if (data.submission_id) {

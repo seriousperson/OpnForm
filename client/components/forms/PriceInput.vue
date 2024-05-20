@@ -5,16 +5,27 @@
     <template #label>
       <slot name="label" />
     </template>
-    <input :id="id?id:name" v-model="compVal" :readonly="readonly" 
-           :type="nativeType" :autocomplete="autocomplete"
-           :pattern="pattern"
-           :style="inputStyle"
-           :class="[theme.default.input, { '!ring-red-500 !ring-2 !border-transparent': hasError, '!cursor-not-allowed !bg-gray-200': disabled }]"
-           :name="name" :accept="accept"
-           :placeholder="placeholder" :min="min" :max="max" :maxlength="maxCharLimit"
-           @change="onChange" @keydown.enter.prevent="onEnterPress"
-    >
-
+    <div class="relative">
+      <span class="absolute inset-y-0 left-0 flex items-center pl-3 pr-2 text-gray-500">£</span>
+      <input
+        :id="id?id:name"
+        v-model="compVal"
+        :readonly="readonly"
+        :type="nativeType"
+        :autocomplete="autocomplete"
+        :pattern="pattern"
+        :style="inputStyle"
+        :class="[theme.default.input, { '!ring-red-500 !ring-2 !border-transparent': hasError, '!cursor-not-allowed !bg-gray-200': disabled }, 'pl-6']"
+        :name="name"
+        :accept="accept"
+        :placeholder="placeholder"
+        :min="min"
+        :max="max"
+        :maxlength="maxCharLimit"
+        @change="onChange"
+        @keydown.enter.prevent="onEnterPress"
+      >
+    </div>
     <template #help>
       <slot name="help" />
     </template>
