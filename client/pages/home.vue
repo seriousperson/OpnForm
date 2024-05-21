@@ -141,8 +141,12 @@ console.log('Token from cookies', useCookie('token').value)
 console.log('User from cookies', useCookie('user').value) 
 
 onMounted(() => {
+
+  console.log('home.onMounted before: => ', useCookie('user').value.workspace_id)
+
+
   if (!formsStore.allLoaded) {
-    formsStore.loadAll(workspacesStore.currentId)
+    formsStore.loadAll(useCookie('user').value.workspace_id)
   } else {
     formsStore.stopLoading()
   }
@@ -171,6 +175,7 @@ const onTagClick = (tag) => {
 
 // Computed
 const isFilteringForms = computed(() => {
+  console.log('home.computed')
   return (search.value !== '' && search.value !== null) || selectedTags.value.size > 0
 })
 

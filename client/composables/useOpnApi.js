@@ -47,6 +47,10 @@ export function getOpnRequestsOptions(request, opts) {
   addAuthHeader(request, opts)
   addPasswordToFormRequest(request, opts)
   addCustomDomainHeader(request, opts)
+    
+  // opts.headers['Access-Control-Allow-Origin'] = '*'
+
+  // console.log('The headers', opts)
 
   if (!opts.baseURL) opts.baseURL = config.public.apiBase
 
