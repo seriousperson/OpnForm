@@ -48,7 +48,7 @@ export function getOpnRequestsOptions(request, opts) {
   addPasswordToFormRequest(request, opts)
   addCustomDomainHeader(request, opts)
     
-  // opts.headers['Access-Control-Allow-Origin'] = '*'
+  opts.headers['Access-Control-Allow-Origin'] = '*'
 
   // console.log('The headers', opts)
 
@@ -94,7 +94,7 @@ export const useOpnApi = (request, opts = {}) => {
 
   console.log('useOpnApi request before: ', request);
 
-  if(request == 'open/workspaces/' || request.includes('forms/')){
+  if(request == 'open/workspaces' || request.includes('forms/')){
     request = useUrlHelper(request, 'fetch');  
   } else {
     request = useUrlHelper(request, 'api');  

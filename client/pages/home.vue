@@ -142,11 +142,8 @@ console.log('User from cookies', useCookie('user').value)
 
 onMounted(() => {
 
-  console.log('home.onMounted before: => ', useCookie('user').value.workspace_id)
-
-
   if (!formsStore.allLoaded) {
-    formsStore.loadAll(useCookie('user').value.workspace_id)
+    formsStore.loadAll(workspacesStore.currentId)
   } else {
     formsStore.stopLoading()
   }

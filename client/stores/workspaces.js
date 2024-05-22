@@ -2,7 +2,7 @@ import {defineStore} from 'pinia'
 import {useStorage} from "@vueuse/core"
 import {useContentStore} from "~/composables/stores/useContentStore.js";
 
-export const workspaceEndpoint = 'open/workspaces/'
+export const workspaceEndpoint = 'open/workspaces'
 
 export const useWorkspacesStore = defineStore('workspaces', () => {
 

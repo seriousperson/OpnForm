@@ -12,7 +12,7 @@ export const useFormsStore = defineStore('forms', () => {
 
   const loadAll = (workspaceId) => {
     contentStore.startLoading()
-    return opnFetch('/open/workspaces/'+useCookie('user').value.workspace_id+'/forms', {query: {page: currentPage.value}})
+    return opnFetch('/open/workspaces/'+workspaceId+'/forms', {query: {page: currentPage.value}})
       .then((response) => {
         if (currentPage.value === 1) {
           contentStore.resetState()

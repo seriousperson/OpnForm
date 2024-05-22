@@ -87,18 +87,11 @@ export default {
         this.authStore.setToken(data.token)
 
         const [userDataResponse, workspacesResponse] = await Promise.all([opnFetch('user'), fetchAllWorkspaces()]);
-
         console.log('pulled workspaces: ', workspacesResponse);
-        console.log('workspace val', workspacesResponse.data.value);
-        console.log('login user', userDataResponse);
-        console.log('login user val', userDataResponse.workspace_id);
-
         this.authStore.setUser(userDataResponse)
-        
-        this.workspaceStore.set(userDataResponse.workspace_id)
-        // this.workspaceStore.set(workspacesResponse.data.value)
+        this.workspaceStore.set(workspacesResponse.data.value)
 
-        console.log('LoginForm.login.currentId', this.workspaceStore.currentId, 'raw', userDataResponse.workspace_id);
+        console.log('LoginForm.login.currentId', this.workspaceStore.currentId);
 
         // Load forms
         // this.formsStore.loadAll(1)

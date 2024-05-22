@@ -246,7 +246,7 @@ export default {
 
       this.updateFormLoading = true
       this.validationErrorResponse = null
-      this.form.put('/open/forms/{id}/'.replace('{id}', this.form.id)).then((data) => {
+      this.form.put('/open/forms/{id}'.replace('{id}', this.form.id)).then((data) => {
         this.formsStore.save(data.form)
         this.$emit('on-save')
         this.$router.push({ name: 'forms-slug-show-share', params: { slug: this.form.slug } })
