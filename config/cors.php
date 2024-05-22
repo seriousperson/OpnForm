@@ -27,6 +27,7 @@ return [
         'http://127.0.0.1:3000',
         'http://localhost:3000',
         'http://formserver.manchesterchemist.com',
+        'http://form.manchesterchemist.com',
         'http://manchesterchemist.shop'
     ],
 
