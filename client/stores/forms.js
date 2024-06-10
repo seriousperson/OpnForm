@@ -12,7 +12,8 @@ export const useFormsStore = defineStore('forms', () => {
 
   const loadAll = (workspaceId) => {
     contentStore.startLoading()
-    return opnFetch('/open/workspaces/'+workspaceId+'/forms', {query: {page: currentPage.value}})
+    return opnFetch('/open/workspaces/1/forms', {query: {page: currentPage.value}})
+    // return opnFetch('/open/workspaces/'+workspaceId+'/forms', {query: {page: currentPage.value}})
       .then((response) => {
         if (currentPage.value === 1) {
           contentStore.resetState()
@@ -47,7 +48,8 @@ export const useFormsStore = defineStore('forms', () => {
 
   const load = (workspaceId, slug) => {
     contentStore.startLoading()
-    return opnFetch('/open/workspaces/'+workspaceId+'/forms/'+slug)
+    return opnFetch('/open/workspaces/1/forms/'+slug)
+    // return opnFetch('/open/workspaces/'+workspaceId+'/forms/'+slug)
       .finally(() => {
         contentStore.stopLoading()
       })

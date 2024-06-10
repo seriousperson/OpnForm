@@ -89,13 +89,15 @@ export default {
         const [userDataResponse, workspacesResponse] = await Promise.all([opnFetch('user'), fetchAllWorkspaces()]);
         console.log('pulled workspaces: ', workspacesResponse);
         this.authStore.setUser(userDataResponse)
-        this.workspaceStore.set(workspacesResponse.data.value)
+        // this.workspaceStore.set(workspacesResponse.data.value)
+        this.workspaceStore.set(1)
 
         console.log('LoginForm.login.currentId', this.workspaceStore.currentId);
 
         // Load forms
         // this.formsStore.loadAll(1)
-        this.formsStore.loadAll(this.workspaceStore.currentId)
+        this.formsStore.loadAll(1)
+        // this.formsStore.loadAll(this.workspaceStore.currentId)
 
         // Redirect home.
         this.redirect()

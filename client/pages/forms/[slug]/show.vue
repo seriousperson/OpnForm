@@ -143,7 +143,8 @@ const slug = useRoute().params.slug
 formsStore.startLoading()
 const user = computed(() => authStore.user)
 const form = computed(() => formsStore.getByKey(slug))
-const workspace = computed(() => workspacesStore.getByKey(form?.value?.workspace_id))
+const workspace = computed(() => workspacesStore.getByKey(1)
+// const workspace = computed(() => workspacesStore.getByKey(form?.value?.workspace_id))
 const loading = computed(() => formsStore.loading || workspacesStore.loading)
 const displayClosesDate = computed(() => {
   if (form.value && form.value.closes_at) {

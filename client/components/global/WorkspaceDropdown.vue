@@ -66,7 +66,8 @@ export default {
 
   computed: {
     workspace () {
-      return this.workspacesStore.getCurrent
+      return 1
+      // return this.workspacesStore.getCurrent
     }
   },
 
@@ -78,7 +79,8 @@ export default {
 
   methods: {
     switchWorkspace (workspace) {
-      this.workspacesStore.setCurrentId(workspace.id)
+      // this.workspacesStore.setCurrentId(workspace.id)
+      this.workspacesStore.setCurrentId(1)
       this.formsStore.resetState()
       this.formsStore.loadAll(workspace.id)
       const router = useRouter()

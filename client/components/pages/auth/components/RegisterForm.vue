@@ -126,10 +126,12 @@ export default {
       this.authStore.setUser(userData)
 
       const workspaces = await fetchAllWorkspaces()
-      this.workspaceStore.set(workspaces.data.value)
+      this.workspaceStore.set(1)
+      // this.workspaceStore.set(workspaces.data.value)
 
       // Load forms
-      this.formsStore.loadAll(this.workspaceStore.currentId)
+      this.formsStore.loadAll(1)
+      // this.formsStore.loadAll(this.workspaceStore.currentId)
 
       this.logEvent('register', {source: this.form.hear_about_us})
 

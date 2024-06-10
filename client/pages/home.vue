@@ -143,7 +143,8 @@ console.log('User from cookies', useCookie('user').value)
 onMounted(() => {
 
   if (!formsStore.allLoaded) {
-    formsStore.loadAll(workspacesStore.currentId)
+    formsStore.loadAll(1)
+    // formsStore.loadAll(workspacesStore.currentId)
   } else {
     formsStore.stopLoading()
   }
@@ -178,7 +179,8 @@ const isFilteringForms = computed(() => {
 
 const enrichedForms = computed(() => {
   let enrichedForms = forms.value.map((form) => {
-    form.workspace = workspacesStore.getByKey(form.workspace_id)
+    // form.workspace = workspacesStore.getByKey(form.workspace_id)
+    form.workspace = workspacesStore.getByKey(1)
     return form
   }).filter((form) => {
     if (selectedTags.value.size === 0) {

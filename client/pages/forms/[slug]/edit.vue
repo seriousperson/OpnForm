@@ -80,7 +80,8 @@ onBeforeMount(() => {
   }
 
   if (!form.value && !formsStore.allLoaded) {
-    formsStore.loadAll(workspacesStore.currentId).then(()=>{
+    // formsStore.loadAll(workspacesStore.currentId).then(()=>{
+    formsStore.loadAll(1).then(()=>{
       initUpdatedForm()
     })
   } else {

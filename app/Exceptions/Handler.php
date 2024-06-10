@@ -42,7 +42,12 @@ class Handler extends ExceptionHandler
      */
     protected function unauthenticated($request, AuthenticationException $exception)
     {
-        return response()->json(['test' => auth('api')->check()], 401);
+        return response()->json([
+            'api' => auth('api')->check(),
+            'web' => auth('web')->check(),
+            'user' => auth('user')->check(),
+            'auth' => auth('auth')->check(),
+        ], 401);
         return response()->json(['message' => $exception->getMessage()], 401);
     }
 
