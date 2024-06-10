@@ -45,7 +45,7 @@ class Handler extends ExceptionHandler
         return response()->json([
             'api' => auth('api')->check(),
             'web' => auth('web')->check(),
-            'user' => auth('user')->check(),
+            // 'user' => auth('user')->check(),
             'auth' => auth('auth')->check(),
         ], 401);
         return response()->json(['message' => $exception->getMessage()], 401);
