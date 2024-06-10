@@ -36,8 +36,6 @@ use Illuminate\Support\Facades\Storage;
 |
 */
 
-dd(env('DB_CONNECTION'));
-
 Route::group(['middleware' => 'auth:api'], function () {
     Route::post('logout', [LoginController::class, 'logout']);
 
