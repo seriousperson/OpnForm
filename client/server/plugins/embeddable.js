@@ -9,10 +9,11 @@ export default defineNitroPlugin(nitroApp => {
       // response.headers['X-Frame-Options'] = 'sameorigin';
       const allowedDomains = [
         'manchesterchemist.com', 
-        'clinic.manchesterchemist.com', 
-        'dev.test:8003', 'dev.test:8005',
-        'formserver.manchesterchemist.com',
-        'manchesterchemist.shop'
+        // 'clinic.manchesterchemist.com', 
+        // 'dev.test:8003', 'dev.test:8005', // old
+        'dev.test:8003', 'dev.test:8006',
+        // 'formserver.manchesterchemist.com',
+        'manchesterchemist.shop',
       ];
 
       // Allow embedding in frames or iframes from any origin

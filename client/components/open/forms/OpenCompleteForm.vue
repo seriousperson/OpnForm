@@ -99,11 +99,11 @@
             {{ form.editable_submissions_button_text }}
           </a>
         </p>
-        <p v-if="!form.no_branding" class="mt-5">
+        <!-- <p v-if="!form.no_branding" class="mt-5">
           <a target="_parent" href="https://manchesterchemist.com" class="text-nt-blue hover:underline">
             Go Back to Manchester Chemist 
           </a>
-        </p>
+        </p> -->
       </div>
     </transition>
   </div>
@@ -187,9 +187,9 @@ export default {
           type: 'form-submitted',
           form: {
             slug: this.form.slug,
-            id: this.form.id
+            id: this.form.id,
+            submission_id: data.raw_submission_id
           },
-          submission_data: form.data()
         })
 
         if (this.isIframe) {
