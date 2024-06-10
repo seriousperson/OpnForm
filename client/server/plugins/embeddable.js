@@ -2,7 +2,7 @@ export default defineNitroPlugin(nitroApp => {
   nitroApp.hooks.hook('render:response', (response, { event }) => {
     const routePath = event.node?.req?.url || event.node?.req?.originalUrl
     // const routePath= event.context.params._
-    if (routePath) {
+    // if (routePath) {
     // if (routePath && !routePath.startsWith('/forms/')) {
       // Only allow embedding of forms
       response.headers['X-Frame-Options'] = 'sameorigin';
@@ -21,8 +21,9 @@ export default defineNitroPlugin(nitroApp => {
       // response.headers['Content-Security-Policy'] = '*';
       response.headers['Content-Security-Policy'] = `frame-ancestors ${allowedDomains.join(' ')}`;
       response.headers['Access-Control-Allow-Origin'] = '*';
-    }
+    // }
 
     delete response.headers['x-powered-by']; 
+
   });
 });
