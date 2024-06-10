@@ -154,15 +154,17 @@ class Form extends Model implements CachableAttributes
 
     public function getViewsCountAttribute()
     {
-        return $this->remember('views_count', 15 * 60, function (): int {
-            if (env('DB_CONNECTION') == 'mysql') {
-                return (int) ($this->views()->count() +
-                    $this->statistics()->sum(DB::raw("json_extract(data, '$.views')")));
-            }
 
-            return $this->views()->count() +
-                $this->statistics()->sum(DB::raw("cast(data->>'views' as integer)"));
-        });
+        return 0;
+        // return $this->remember('views_count', 15 * 60, function (): int {
+        //     if (env('DB_CONNECTION') == 'mysql') {
+        //         return (int) ($this->views()->count() +
+        //             $this->statistics()->sum(DB::raw("json_extract(data, '$.views')")));
+        //     }
+
+        //     return $this->views()->count() +
+        //         $this->statistics()->sum(DB::raw("cast(data->>'views' as integer)"));
+        // });
     }
 
     public function setDescriptionAttribute($value)
