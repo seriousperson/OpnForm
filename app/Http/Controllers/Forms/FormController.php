@@ -112,7 +112,6 @@ class FormController extends Controller
     {
         //$this->authorize('create', Form::class);
 
-        dd('getting to 1');
         $workspace = Workspace::findOrFail($request->get('workspace_id'));
         //$this->authorize('view', $workspace);
 
@@ -121,7 +120,6 @@ class FormController extends Controller
             ->simulateCleaning($workspace)
             ->getData();
 
-        dd('getting here');
         $form = Form::create(array_merge($formData, [
             'creator_id' => $request->user()->id,
         ]));
