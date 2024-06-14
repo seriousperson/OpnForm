@@ -129,7 +129,8 @@ export default {
 
         // Detect priced item
         if(!isNaN(val) && (typeof val === 'number') && (option[this.displayKey] !== val)){
-          return `${option[this.displayKey]} - £${val}`  
+          return option[this.displayKey];
+          // return `${option[this.displayKey]} - £${val}`  
         } else {
           return option[this.displayKey]
         }
