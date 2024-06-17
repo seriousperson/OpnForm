@@ -120,6 +120,13 @@ class FormController extends Controller
             ->simulateCleaning($workspace)
             ->getData();
 
+        if(empty($formData['tags'])){
+            $formData['tags'] = [];
+        }
+        if(empty($formData['removed_properties'])){
+            $formData['removed_properties'] = [];
+        }
+
         $form = Form::create(array_merge($formData, [
             'creator_id' => $request->user()->id,
         ]));
