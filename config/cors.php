@@ -26,8 +26,8 @@ return [
         'http://127.0.0.1:3000',
         'http://localhost:3000',
         // 'https://formserver.manchesterchemist.com',
-        'https://*.manchesterchemist.com',
-        'http://*.manchesterchemist.com',
+        '*.manchesterchemist.com',
+        '*.manchesterchemist.com',
     ],
 
     'allowed_origins_patterns' => [],
