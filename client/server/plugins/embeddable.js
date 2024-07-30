@@ -12,7 +12,7 @@ export default defineNitroPlugin(nitroApp => {
         // 'clinic.manchesterchemist.com', 
         // 'dev.test:8003', 'dev.test:8005', // old
         'dev.test:8003', 'dev.test:8006',
-        // 'formserver.manchesterchemist.com',
+        'formserver.manchesterchemist.com',
         'manchesterchemist.shop',
       ];
 
