@@ -21,13 +21,8 @@ return [
 
     'allowed_origins' => [
         'https://manchesterchemist.com', 
-        'http://dev.test:8003', 
-        'http://dev.test:8005', 
-        'http://127.0.0.1:3000',
+        'https://form.manchesterchemist.com',
         'http://localhost:3000',
-        // 'https://formserver.manchesterchemist.com',
-        '*.manchesterchemist.com',
-        '*.manchesterchemist.com',
     ],
 
     'allowed_origins_patterns' => [],
